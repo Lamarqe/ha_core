@@ -71,6 +71,8 @@ class FritzData:
     tracked: dict[str, set[str]] = field(default_factory=dict)
     profile_switches: dict[str, set[str]] = field(default_factory=dict)
     wol_buttons: dict[str, set[str]] = field(default_factory=dict)
+    mesh_node_sensors: dict[str, set[str]] = field(default_factory=dict)
+    device_speed_sensors: dict[str, set[str]] = field(default_factory=dict)
 
 
 class ClassSetupMissing(Exception):
@@ -160,6 +162,7 @@ class FritzBoxTools(DataUpdateCoordinator[UpdateCoordinatorDataType]):
         )
 
         self._devices: dict[str, FritzDevice] = {}
+        self._mesh_nodes: dict[str, str] = {}
         self._options: Mapping[str, Any] | None = None
         self._unique_id: str | None = None
         self.host = host
@@ -419,6 +422,16 @@ class FritzBoxTools(DataUpdateCoordinator[UpdateCoordinatorDataType]):
         """Event specific per FRITZ!Box entry to signal updates in devices."""
         return f"{DOMAIN}-device-update-{self._unique_id}"
 
+    @property
+    def mesh_nodes(self) -> dict[str, str]:
+        """Return mesh nodes mapping device_name to formatted MAC address."""
+        return self._mesh_nodes
+
+    @property
+    def signal_mesh_node_new(self) -> str:
+        """Event specific per FRITZ!Box entry to signal new mesh node."""
+        return f"{DOMAIN}-mesh-node-new-{self._unique_id}"
+
     async def _async_get_wan_access(self, ip_address: str) -> bool | None:
         """Get WAN access rule for given IP address."""
         try:
@@ -582,6 +595,24 @@ class FritzBoxTools(DataUpdateCoordinator[UpdateCoordinatorDataType]):
             self._release_url,
         ) = await self._async_update_device_info()
 
+    def _update_mesh_nodes(self, new_mesh_nodes: dict[str, str]) -> None:
+        """Update tracked mesh nodes, register new slave device entries, and signal changes."""
+        new_nodes = set(new_mesh_nodes) - set(self._mesh_nodes)
+        self._mesh_nodes = new_mesh_nodes
+
+        for node_name, node_mac in new_mesh_nodes.items():
+            if node_mac != self.mac:
+                dr.async_get(self.hass).async_get_or_create(
+                    config_entry_id=self.config_entry.entry_id,
+                    connections={(CONNECTION_NETWORK_MAC, node_mac)},
+                    manufacturer="FRITZ!",
+                    name=node_name,
+                    via_device=(DOMAIN, self.unique_id),
+                )
+
+        if new_nodes:
+            async_dispatcher_send(self.hass, self.signal_mesh_node_new)
+
     async def async_scan_devices(self, now: datetime | None = None) -> None:
         """Scan for new network devices."""
 
@@ -629,15 +660,17 @@ class FritzBoxTools(DataUpdateCoordinator[UpdateCoordinatorDataType]):
             return
 
         mesh_intf = {}
+        new_mesh_nodes: dict[str, str] = {}
         # first get all meshed devices
         for node in topology.get("nodes", []):
             if not node["is_meshed"]:
                 continue
 
+            node_name = node["device_name"]
             for interf in node["node_interfaces"]:
                 int_mac = interf["mac_address"]
                 mesh_intf[interf["uid"]] = Interface(
-                    device=node["device_name"],
+                    device=node_name,
                     mac=int_mac,
                     op_mode=interf.get("op_mode", ""),
                     ssid=interf.get("ssid", ""),
@@ -649,8 +682,14 @@ class FritzBoxTools(DataUpdateCoordinator[UpdateCoordinatorDataType]):
                 ].lower().startswith("uplink"):
                     self.mesh_wifi_uplink = True
 
-                if dr.format_mac(int_mac) == self.mac:
+                formatted_mac = dr.format_mac(int_mac)
+                if formatted_mac == self.mac:
                     self.mesh_role = MeshRoles(node["mesh_role"])
+                    new_mesh_nodes[node_name] = self.mac
+                elif node_name not in new_mesh_nodes:
+                    new_mesh_nodes[node_name] = formatted_mac
+
+        self._update_mesh_nodes(new_mesh_nodes)
 
         # second get all client devices
         for node in topology.get("nodes", []):
@@ -677,6 +716,8 @@ class FritzBoxTools(DataUpdateCoordinator[UpdateCoordinatorDataType]):
                         dev_info.connected_to = intf["device"]
                         dev_info.connection_type = intf["type"]
                         dev_info.ssid = intf.get("ssid")
+                        dev_info.cur_rx_rate = link.get("cur_data_rate_rx")
+                        dev_info.cur_tx_rate = link.get("cur_data_rate_tx")
 
                 if self.manage_device_info(dev_info, dev_mac, consider_home):
                     new_device = True
@@ -740,6 +781,9 @@ class FritzBoxTools(DataUpdateCoordinator[UpdateCoordinatorDataType]):
         valid_connections = {
             (CONNECTION_NETWORK_MAC, dr.format_mac(mac)) for mac in device_hosts
         }
+        valid_connections.update(
+            {(CONNECTION_NETWORK_MAC, mac) for mac in self._mesh_nodes.values()}
+        )
         for device in dr.async_entries_for_config_entry(
             device_reg, config_entry.entry_id
         ):

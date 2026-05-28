@@ -2,6 +2,7 @@
 
 import datetime
 import logging
+from typing import Any
 
 from homeassistant.components.device_tracker import ScannerEntity
 from homeassistant.core import HomeAssistant, callback
@@ -88,9 +89,9 @@ class FritzBoxTracker(FritzDeviceBase, ScannerEntity):
         return self._mac
 
     @property
-    def extra_state_attributes(self) -> dict[str, str]:
+    def extra_state_attributes(self) -> dict[str, Any]:
         """Return the attributes."""
-        attrs: dict[str, str] = {}
+        attrs: dict[str, Any] = {}
         device = self._avm_wrapper.devices[self._mac]
         self._last_activity = device.last_activity
         if self._last_activity is not None:
@@ -103,4 +104,10 @@ class FritzBoxTracker(FritzDeviceBase, ScannerEntity):
             attrs["connection_type"] = device.connection_type
         if device.ssid:
             attrs["ssid"] = device.ssid
+        attrs["ip"] = device.ip_address
+        attrs["mac"] = self._mac
+        if device.cur_rx_rate is not None:
+            attrs["cur_rx_kbps"] = device.cur_rx_rate
+        if device.cur_tx_rate is not None:
+            attrs["cur_tx_kbps"] = device.cur_tx_rate
         return attrs

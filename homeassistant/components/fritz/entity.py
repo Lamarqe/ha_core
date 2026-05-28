@@ -70,6 +70,22 @@ class FritzBoxBaseEntity:
         )
 
 
+class FritzMeshNodeEntity(CoordinatorEntity[AvmWrapper]):
+    """Base entity for a FRITZ!Box mesh node (master or slave repeater)."""
+
+    _attr_has_entity_name = True
+
+    def __init__(self, avm_wrapper: AvmWrapper, node_name: str, node_mac: str) -> None:
+        """Initialize a mesh node entity."""
+        super().__init__(avm_wrapper)
+        self._avm_wrapper = avm_wrapper
+        self._node_name = node_name
+        self._node_mac = node_mac
+        self._attr_device_info = DeviceInfo(
+            connections={(dr.CONNECTION_NETWORK_MAC, node_mac)}
+        )
+
+
 @dataclass(frozen=True, kw_only=True)
 class FritzEntityDescription(EntityDescription):
     """Fritz entity base description."""

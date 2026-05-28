@@ -21,6 +21,8 @@ class Device:
     name: str
     ssid: str | None
     wan_access: bool | None = None
+    cur_rx_rate: int | None = None
+    cur_tx_rate: int | None = None
 
 
 class Interface(TypedDict):
@@ -78,6 +80,8 @@ class FritzDevice:
     _connected: bool
     _connected_to: str
     _connection_type: str
+    _cur_rx_rate: int | None
+    _cur_tx_rate: int | None
     _ip_address: str
     _last_activity: datetime | None
     _mac: str
@@ -114,6 +118,8 @@ class FritzDevice:
         self._ip_address = dev_info.ip_address
         self._ssid = dev_info.ssid
         self._wan_access = dev_info.wan_access
+        self._cur_rx_rate = dev_info.cur_rx_rate
+        self._cur_tx_rate = dev_info.cur_tx_rate
 
     @property
     def connected_to(self) -> str:
@@ -164,6 +170,16 @@ class FritzDevice:
     def wan_access(self, allowed: bool) -> None:
         """Set device wan access."""
         self._wan_access = allowed
+
+    @property
+    def cur_rx_rate(self) -> int | None:
+        """Return current receive rate in kbit/s."""
+        return self._cur_rx_rate
+
+    @property
+    def cur_tx_rate(self) -> int | None:
+        """Return current transmit rate in kbit/s."""
+        return self._cur_tx_rate
 
 
 class SwitchInfo(TypedDict):

@@ -120,6 +120,12 @@
       "cpu_temperature": {
         "name": "CPU temperature"
       },
+      "device_cur_rx_rate": {
+        "name": "Download speed"
+      },
+      "device_cur_tx_rate": {
+        "name": "Upload speed"
+      },
       "external_ip": {
         "name": "External IP"
       },
@@ -161,6 +167,21 @@
       },
       "max_kb_s_sent": {
         "name": "Max connection upload throughput"
+      },
+      "mesh_connected_devices": {
+        "name": "Connected devices"
+      },
+      "mesh_lan_devices": {
+        "name": "LAN devices"
+      },
+      "mesh_rx_rate": {
+        "name": "Download speed"
+      },
+      "mesh_tx_rate": {
+        "name": "Upload speed"
+      },
+      "mesh_wifi_devices": {
+        "name": "Wi-Fi devices"
       }
     },
     "switch": {

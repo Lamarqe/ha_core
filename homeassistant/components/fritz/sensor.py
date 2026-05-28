@@ -4,6 +4,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 import logging
+from typing import Any
 
 from fritzconnection.core.exceptions import FritzConnectionException
 from fritzconnection.lib.fritzstatus import FritzStatus
@@ -22,15 +23,21 @@ from homeassistant.const import (
     UnitOfInformation,
     UnitOfTemperature,
 )
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, callback
+from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 from homeassistant.helpers.typing import StateType
 from homeassistant.util.dt import utcnow
 
-from .const import DSL_CONNECTION
-from .coordinator import FritzConfigEntry
-from .entity import FritzBoxBaseCoordinatorEntity, FritzEntityDescription
-from .models import ConnectionInfo
+from .const import DSL_CONNECTION, MeshRoles
+from .coordinator import FRITZ_DATA_KEY, AvmWrapper, FritzConfigEntry
+from .entity import (
+    FritzBoxBaseCoordinatorEntity,
+    FritzDeviceBase,
+    FritzEntityDescription,
+    FritzMeshNodeEntity,
+)
+from .models import ConnectionInfo, FritzDevice
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -310,6 +317,137 @@ DEVICE_SENSOR_TYPES: tuple[FritzDeviceSensorEntityDescription, ...] = (
 )
 
 
+@dataclass(frozen=True, kw_only=True)
+class FritzMeshNodeSensorEntityDescription(SensorEntityDescription):
+    """Describes a Fritz mesh node sensor entity."""
+
+    value_fn: Callable[..., StateType]
+
+
+@dataclass(frozen=True, kw_only=True)
+class FritzDeviceSpeedSensorEntityDescription(SensorEntityDescription):
+    """Describes a Fritz client device speed sensor entity."""
+
+    value_fn: Callable[[FritzDevice], StateType]
+
+
+def _mesh_connected_devices(wrapper: FritzMeshNodeSensor, node_name: str) -> int:
+    return sum(
+        1
+        for d in wrapper.coordinator.devices.values()
+        if d.connected_to == node_name and d.is_connected
+    )
+
+
+def _mesh_wifi_devices(wrapper: FritzMeshNodeSensor, node_name: str) -> int:
+    return sum(
+        1
+        for d in wrapper.coordinator.devices.values()
+        if d.connected_to == node_name
+        and d.is_connected
+        and d.connection_type.upper() == "WLAN"
+    )
+
+
+def _mesh_lan_devices(wrapper: FritzMeshNodeSensor, node_name: str) -> int:
+    return sum(
+        1
+        for d in wrapper.coordinator.devices.values()
+        if d.connected_to == node_name
+        and d.is_connected
+        and d.connection_type.upper() == "LAN"
+    )
+
+
+def _mesh_rx_rate(wrapper: FritzMeshNodeSensor, node_name: str) -> float | None:
+    rates = [
+        d.cur_rx_rate
+        for d in wrapper.coordinator.devices.values()
+        if d.connected_to == node_name and d.is_connected and d.cur_rx_rate is not None
+    ]
+    return round(sum(rates) / 1000, 1) if rates else None
+
+
+def _mesh_tx_rate(wrapper: FritzMeshNodeSensor, node_name: str) -> float | None:
+    rates = [
+        d.cur_tx_rate
+        for d in wrapper.coordinator.devices.values()
+        if d.connected_to == node_name and d.is_connected and d.cur_tx_rate is not None
+    ]
+    return round(sum(rates) / 1000, 1) if rates else None
+
+
+MESH_NODE_SENSOR_TYPES: tuple[FritzMeshNodeSensorEntityDescription, ...] = (
+    FritzMeshNodeSensorEntityDescription(
+        key="mesh_connected_devices",
+        translation_key="mesh_connected_devices",
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=_mesh_connected_devices,
+    ),
+    FritzMeshNodeSensorEntityDescription(
+        key="mesh_wifi_devices",
+        translation_key="mesh_wifi_devices",
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        value_fn=_mesh_wifi_devices,
+    ),
+    FritzMeshNodeSensorEntityDescription(
+        key="mesh_lan_devices",
+        translation_key="mesh_lan_devices",
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        value_fn=_mesh_lan_devices,
+    ),
+    FritzMeshNodeSensorEntityDescription(
+        key="mesh_rx_rate",
+        translation_key="mesh_rx_rate",
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=UnitOfDataRate.MEGABITS_PER_SECOND,
+        device_class=SensorDeviceClass.DATA_RATE,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        value_fn=_mesh_rx_rate,
+    ),
+    FritzMeshNodeSensorEntityDescription(
+        key="mesh_tx_rate",
+        translation_key="mesh_tx_rate",
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=UnitOfDataRate.MEGABITS_PER_SECOND,
+        device_class=SensorDeviceClass.DATA_RATE,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        value_fn=_mesh_tx_rate,
+    ),
+)
+
+DEVICE_SPEED_SENSOR_TYPES: tuple[FritzDeviceSpeedSensorEntityDescription, ...] = (
+    FritzDeviceSpeedSensorEntityDescription(
+        key="cur_rx_rate",
+        translation_key="device_cur_rx_rate",
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=UnitOfDataRate.MEGABITS_PER_SECOND,
+        device_class=SensorDeviceClass.DATA_RATE,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        value_fn=lambda device: (
+            round(device.cur_rx_rate / 1000, 1)
+            if device.cur_rx_rate is not None
+            else None
+        ),
+    ),
+    FritzDeviceSpeedSensorEntityDescription(
+        key="cur_tx_rate",
+        translation_key="device_cur_tx_rate",
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=UnitOfDataRate.MEGABITS_PER_SECOND,
+        device_class=SensorDeviceClass.DATA_RATE,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        value_fn=lambda device: (
+            round(device.cur_tx_rate / 1000, 1)
+            if device.cur_tx_rate is not None
+            else None
+        ),
+    ),
+)
+
+
 async def async_setup_entry(
     hass: HomeAssistant,
     entry: FritzConfigEntry,
@@ -320,7 +458,7 @@ async def async_setup_entry(
     avm_wrapper = entry.runtime_data
 
     connection_info = await avm_wrapper.async_get_connection_info()
-    entities = [
+    entities: list[FritzBoxSensor | FritzMeshNodeSensor | FritzDeviceSpeedSensor] = [
         FritzBoxSensor(avm_wrapper, entry.title, description)
         for description in CONNECTION_SENSOR_TYPES
         if description.is_suitable(connection_info)
@@ -337,6 +475,77 @@ async def async_setup_entry(
 
     entities += await hass.async_add_executor_job(_generate_device_sensors)
 
+    fritz_data = hass.data[FRITZ_DATA_KEY]
+
+    if (
+        fritz_status.device_has_mesh_support
+        and connection_info.mesh_role == MeshRoles.MASTER
+    ):
+        fritz_data.mesh_node_sensors.setdefault(entry.entry_id, set())
+        fritz_data.device_speed_sensors.setdefault(entry.entry_id, set())
+
+        for node_name, node_mac in avm_wrapper.mesh_nodes.items():
+            for node_desc in MESH_NODE_SENSOR_TYPES:
+                sensor_key = f"{node_mac}_{node_desc.key}"
+                if sensor_key not in fritz_data.mesh_node_sensors[entry.entry_id]:
+                    fritz_data.mesh_node_sensors[entry.entry_id].add(sensor_key)
+                    entities.append(
+                        FritzMeshNodeSensor(avm_wrapper, node_name, node_mac, node_desc)
+                    )
+
+        for mac, fritz_device in avm_wrapper.devices.items():
+            for speed_desc in DEVICE_SPEED_SENSOR_TYPES:
+                sensor_key = f"{mac}_{speed_desc.key}"
+                if sensor_key not in fritz_data.device_speed_sensors[entry.entry_id]:
+                    fritz_data.device_speed_sensors[entry.entry_id].add(sensor_key)
+                    entities.append(
+                        FritzDeviceSpeedSensor(avm_wrapper, fritz_device, speed_desc)
+                    )
+
+        @callback
+        def add_mesh_node_sensors() -> None:
+            new_entities: list[FritzMeshNodeSensor] = []
+            for node_name, node_mac in avm_wrapper.mesh_nodes.items():
+                for node_desc in MESH_NODE_SENSOR_TYPES:
+                    sensor_key = f"{node_mac}_{node_desc.key}"
+                    if sensor_key not in fritz_data.mesh_node_sensors[entry.entry_id]:
+                        fritz_data.mesh_node_sensors[entry.entry_id].add(sensor_key)
+                        new_entities.append(
+                            FritzMeshNodeSensor(
+                                avm_wrapper, node_name, node_mac, node_desc
+                            )
+                        )
+            async_add_entities(new_entities)
+
+        @callback
+        def add_device_speed_sensors() -> None:
+            new_entities: list[FritzDeviceSpeedSensor] = []
+            for mac, fritz_device in avm_wrapper.devices.items():
+                for speed_desc in DEVICE_SPEED_SENSOR_TYPES:
+                    sensor_key = f"{mac}_{speed_desc.key}"
+                    if (
+                        sensor_key
+                        not in fritz_data.device_speed_sensors[entry.entry_id]
+                    ):
+                        fritz_data.device_speed_sensors[entry.entry_id].add(sensor_key)
+                        new_entities.append(
+                            FritzDeviceSpeedSensor(
+                                avm_wrapper, fritz_device, speed_desc
+                            )
+                        )
+            async_add_entities(new_entities)
+
+        entry.async_on_unload(
+            async_dispatcher_connect(
+                hass, avm_wrapper.signal_mesh_node_new, add_mesh_node_sensors
+            )
+        )
+        entry.async_on_unload(
+            async_dispatcher_connect(
+                hass, avm_wrapper.signal_device_new, add_device_speed_sensors
+            )
+        )
+
     async_add_entities(entities)
 
 
@@ -351,3 +560,81 @@ class FritzBoxSensor(FritzBoxBaseCoordinatorEntity, SensorEntity):
     def native_value(self) -> StateType:
         """Return the value reported by the sensor."""
         return self.coordinator.data["entity_states"].get(self.entity_description.key)
+
+
+class FritzMeshNodeSensor(FritzMeshNodeEntity, SensorEntity):
+    """Sensor for aggregate metrics of a FRITZ!Box mesh node."""
+
+    entity_description: FritzMeshNodeSensorEntityDescription
+
+    def __init__(
+        self,
+        avm_wrapper: AvmWrapper,
+        node_name: str,
+        node_mac: str,
+        description: FritzMeshNodeSensorEntityDescription,
+    ) -> None:
+        """Initialize mesh node sensor."""
+        super().__init__(avm_wrapper, node_name, node_mac)
+        self.entity_description = description
+        self._attr_unique_id = f"{node_mac}_{description.key}"
+        self._is_master = node_mac == avm_wrapper.mac
+
+    @property
+    def native_value(self) -> StateType:
+        """Return the value reported by the sensor."""
+        return self.entity_description.value_fn(self, self._node_name)
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        """Return extra attributes for the connected-devices sensor."""
+        if self.entity_description.key != "mesh_connected_devices":
+            return {}
+        devices = self._avm_wrapper.devices
+        node_devices = [
+            d
+            for d in devices.values()
+            if d.connected_to == self._node_name and d.is_connected
+        ]
+        rx_kbps: int | None = (
+            sum(d.cur_rx_rate for d in node_devices if d.cur_rx_rate is not None)
+            or None
+        )
+        tx_kbps: int | None = (
+            sum(d.cur_tx_rate for d in node_devices if d.cur_tx_rate is not None)
+            or None
+        )
+        return {
+            "node_name": self._node_name,
+            "is_master": self._is_master,
+            "fritz_unique_id": self._avm_wrapper.unique_id,
+            "fritz_host": self._avm_wrapper.host,
+            "node_mac": self._node_mac,
+            "rx_rate_kbps": rx_kbps,
+            "tx_rate_kbps": tx_kbps,
+        }
+
+
+class FritzDeviceSpeedSensor(FritzDeviceBase, SensorEntity):
+    """Sensor for current link speed of a client device connected to the mesh."""
+
+    entity_description: FritzDeviceSpeedSensorEntityDescription
+
+    def __init__(
+        self,
+        avm_wrapper: AvmWrapper,
+        device: FritzDevice,
+        description: FritzDeviceSpeedSensorEntityDescription,
+    ) -> None:
+        """Initialize device speed sensor."""
+        super().__init__(avm_wrapper, device)
+        self.entity_description = description
+        self._attr_unique_id = f"{device.mac_address}_{description.key}"
+
+    @property
+    def native_value(self) -> StateType:
+        """Return the value reported by the sensor."""
+        device = self._avm_wrapper.devices.get(self._mac)
+        if device is None:
+            return None
+        return self.entity_description.value_fn(device)
