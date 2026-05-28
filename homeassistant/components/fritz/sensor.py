@@ -485,8 +485,6 @@ async def async_setup_entry(
         fritz_data.device_speed_sensors.setdefault(entry.entry_id, set())
 
         for node_name, node_mac in avm_wrapper.mesh_nodes.items():
-            if node_mac != avm_wrapper.mac:
-                continue
             for node_desc in MESH_NODE_SENSOR_TYPES:
                 sensor_key = f"{node_mac}_{node_desc.key}"
                 if sensor_key not in fritz_data.mesh_node_sensors[entry.entry_id]:
@@ -508,8 +506,6 @@ async def async_setup_entry(
         def add_mesh_node_sensors() -> None:
             new_entities: list[FritzMeshNodeSensor] = []
             for node_name, node_mac in avm_wrapper.mesh_nodes.items():
-                if node_mac != avm_wrapper.mac:
-                    continue
                 for node_desc in MESH_NODE_SENSOR_TYPES:
                     sensor_key = f"{node_mac}_{node_desc.key}"
                     if sensor_key not in fritz_data.mesh_node_sensors[entry.entry_id]:
