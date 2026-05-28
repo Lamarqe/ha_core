@@ -1,5 +1,121 @@
 # serializer version: 1
-# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.fritz_repeater-entry]
+# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.fritz_repeater_download_speed-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.fritz_repeater_download_speed',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Download speed',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.DATA_RATE: 'data_rate'>,
+    'original_icon': None,
+    'original_name': 'Download speed',
+    'platform': 'fritz',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': 'device_cur_rx_rate',
+    'unique_id': '1C:ED:6F:12:34:21_cur_rx_rate',
+    'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
+  })
+# ---
+# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.fritz_repeater_download_speed-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'device_class': 'data_rate',
+      'friendly_name': 'fritz-repeater Download speed',
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_repeater_download_speed',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '144.4',
+  })
+# ---
+# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.fritz_repeater_upload_speed-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.fritz_repeater_upload_speed',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Upload speed',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.DATA_RATE: 'data_rate'>,
+    'original_icon': None,
+    'original_name': 'Upload speed',
+    'platform': 'fritz',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': 'device_cur_tx_rate',
+    'unique_id': '1C:ED:6F:12:34:21_cur_tx_rate',
+    'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
+  })
+# ---
+# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.fritz_repeater_upload_speed-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'device_class': 'data_rate',
+      'friendly_name': 'fritz-repeater Upload speed',
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_repeater_upload_speed',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '130.0',
+  })
+# ---
+# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.mock_title_connected_devices-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -15,7 +131,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.fritz_repeater',
+    'entity_id': 'sensor.mock_title_connected_devices',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -23,294 +139,12 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': None,
+    'object_id_base': 'Connected devices',
     'options': dict({
     }),
     'original_device_class': None,
     'original_icon': None,
-    'original_name': None,
-    'platform': 'fritz',
-    'previous_unique_id': None,
-    'suggested_object_id': None,
-    'supported_features': 0,
-    'translation_key': 'mesh_connected_devices',
-    'unique_id': '1c:ed:6f:12:34:21_mesh_connected_devices',
-    'unit_of_measurement': None,
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.fritz_repeater-state]
-  StateSnapshot({
-    'attributes': ReadOnlyDict({
-      'friendly_name': 'fritz-repeater',
-      'fritz_host': 'fake_host',
-      'fritz_unique_id': '1CED6F123411',
-      'is_master': False,
-      'node_mac': '1c:ed:6f:12:34:21',
-      'node_name': 'fritz-repeater',
-      'rx_rate_kbps': None,
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-      'tx_rate_kbps': None,
-    }),
-    'context': <ANY>,
-    'entity_id': 'sensor.fritz_repeater',
-    'last_changed': <ANY>,
-    'last_reported': <ANY>,
-    'last_updated': <ANY>,
-    'state': '0',
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.fritz_repeater_2-entry]
-  EntityRegistryEntrySnapshot({
-    'aliases': list([
-      None,
-    ]),
-    'area_id': None,
-    'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
-    'config_entry_id': <ANY>,
-    'config_subentry_id': <ANY>,
-    'device_class': None,
-    'device_id': <ANY>,
-    'disabled_by': None,
-    'domain': 'sensor',
-    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
-    'entity_id': 'sensor.fritz_repeater_2',
-    'has_entity_name': True,
-    'hidden_by': None,
-    'icon': None,
-    'id': <ANY>,
-    'labels': set({
-    }),
-    'name': None,
-    'object_id_base': None,
-    'options': dict({
-    }),
-    'original_device_class': None,
-    'original_icon': None,
-    'original_name': None,
-    'platform': 'fritz',
-    'previous_unique_id': None,
-    'suggested_object_id': None,
-    'supported_features': 0,
-    'translation_key': 'mesh_wifi_devices',
-    'unique_id': '1c:ed:6f:12:34:21_mesh_wifi_devices',
-    'unit_of_measurement': None,
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.fritz_repeater_2-state]
-  StateSnapshot({
-    'attributes': ReadOnlyDict({
-      'friendly_name': 'fritz-repeater',
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
-    'context': <ANY>,
-    'entity_id': 'sensor.fritz_repeater_2',
-    'last_changed': <ANY>,
-    'last_reported': <ANY>,
-    'last_updated': <ANY>,
-    'state': '0',
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.fritz_repeater_3-entry]
-  EntityRegistryEntrySnapshot({
-    'aliases': list([
-      None,
-    ]),
-    'area_id': None,
-    'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
-    'config_entry_id': <ANY>,
-    'config_subentry_id': <ANY>,
-    'device_class': None,
-    'device_id': <ANY>,
-    'disabled_by': None,
-    'domain': 'sensor',
-    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
-    'entity_id': 'sensor.fritz_repeater_3',
-    'has_entity_name': True,
-    'hidden_by': None,
-    'icon': None,
-    'id': <ANY>,
-    'labels': set({
-    }),
-    'name': None,
-    'object_id_base': None,
-    'options': dict({
-    }),
-    'original_device_class': None,
-    'original_icon': None,
-    'original_name': None,
-    'platform': 'fritz',
-    'previous_unique_id': None,
-    'suggested_object_id': None,
-    'supported_features': 0,
-    'translation_key': 'mesh_lan_devices',
-    'unique_id': '1c:ed:6f:12:34:21_mesh_lan_devices',
-    'unit_of_measurement': None,
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.fritz_repeater_3-state]
-  StateSnapshot({
-    'attributes': ReadOnlyDict({
-      'friendly_name': 'fritz-repeater',
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
-    'context': <ANY>,
-    'entity_id': 'sensor.fritz_repeater_3',
-    'last_changed': <ANY>,
-    'last_reported': <ANY>,
-    'last_updated': <ANY>,
-    'state': '0',
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.fritz_repeater_data_rate-entry]
-  EntityRegistryEntrySnapshot({
-    'aliases': list([
-      None,
-    ]),
-    'area_id': None,
-    'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
-    'config_entry_id': <ANY>,
-    'config_subentry_id': <ANY>,
-    'device_class': None,
-    'device_id': <ANY>,
-    'disabled_by': None,
-    'domain': 'sensor',
-    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
-    'entity_id': 'sensor.fritz_repeater_data_rate',
-    'has_entity_name': True,
-    'hidden_by': None,
-    'icon': None,
-    'id': <ANY>,
-    'labels': set({
-    }),
-    'name': None,
-    'object_id_base': 'Data rate',
-    'options': dict({
-      'sensor': dict({
-        'suggested_display_precision': 2,
-      }),
-    }),
-    'original_device_class': <SensorDeviceClass.DATA_RATE: 'data_rate'>,
-    'original_icon': None,
-    'original_name': 'Data rate',
-    'platform': 'fritz',
-    'previous_unique_id': None,
-    'suggested_object_id': None,
-    'supported_features': 0,
-    'translation_key': 'mesh_rx_rate',
-    'unique_id': '1c:ed:6f:12:34:21_mesh_rx_rate',
-    'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.fritz_repeater_data_rate-state]
-  StateSnapshot({
-    'attributes': ReadOnlyDict({
-      'device_class': 'data_rate',
-      'friendly_name': 'fritz-repeater Data rate',
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-      'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
-    }),
-    'context': <ANY>,
-    'entity_id': 'sensor.fritz_repeater_data_rate',
-    'last_changed': <ANY>,
-    'last_reported': <ANY>,
-    'last_updated': <ANY>,
-    'state': 'unknown',
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.fritz_repeater_data_rate_2-entry]
-  EntityRegistryEntrySnapshot({
-    'aliases': list([
-      None,
-    ]),
-    'area_id': None,
-    'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
-    'config_entry_id': <ANY>,
-    'config_subentry_id': <ANY>,
-    'device_class': None,
-    'device_id': <ANY>,
-    'disabled_by': None,
-    'domain': 'sensor',
-    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
-    'entity_id': 'sensor.fritz_repeater_data_rate_2',
-    'has_entity_name': True,
-    'hidden_by': None,
-    'icon': None,
-    'id': <ANY>,
-    'labels': set({
-    }),
-    'name': None,
-    'object_id_base': 'Data rate',
-    'options': dict({
-      'sensor': dict({
-        'suggested_display_precision': 2,
-      }),
-    }),
-    'original_device_class': <SensorDeviceClass.DATA_RATE: 'data_rate'>,
-    'original_icon': None,
-    'original_name': 'Data rate',
-    'platform': 'fritz',
-    'previous_unique_id': None,
-    'suggested_object_id': None,
-    'supported_features': 0,
-    'translation_key': 'mesh_tx_rate',
-    'unique_id': '1c:ed:6f:12:34:21_mesh_tx_rate',
-    'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.fritz_repeater_data_rate_2-state]
-  StateSnapshot({
-    'attributes': ReadOnlyDict({
-      'device_class': 'data_rate',
-      'friendly_name': 'fritz-repeater Data rate',
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-      'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
-    }),
-    'context': <ANY>,
-    'entity_id': 'sensor.fritz_repeater_data_rate_2',
-    'last_changed': <ANY>,
-    'last_reported': <ANY>,
-    'last_updated': <ANY>,
-    'state': 'unknown',
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.mock_title-entry]
-  EntityRegistryEntrySnapshot({
-    'aliases': list([
-      None,
-    ]),
-    'area_id': None,
-    'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
-    'config_entry_id': <ANY>,
-    'config_subentry_id': <ANY>,
-    'device_class': None,
-    'device_id': <ANY>,
-    'disabled_by': None,
-    'domain': 'sensor',
-    'entity_category': None,
-    'entity_id': 'sensor.mock_title',
-    'has_entity_name': True,
-    'hidden_by': None,
-    'icon': None,
-    'id': <ANY>,
-    'labels': set({
-    }),
-    'name': None,
-    'object_id_base': None,
-    'options': dict({
-    }),
-    'original_device_class': None,
-    'original_icon': None,
-    'original_name': None,
+    'original_name': 'Connected devices',
     'platform': 'fritz',
     'previous_unique_id': None,
     'suggested_object_id': None,
@@ -320,131 +154,25 @@
     'unit_of_measurement': None,
   })
 # ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.mock_title-state]
+# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.mock_title_connected_devices-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'friendly_name': 'Mock Title',
+      'friendly_name': 'Mock Title Connected devices',
       'fritz_host': 'fake_host',
       'fritz_unique_id': '1CED6F123411',
       'is_master': True,
       'node_mac': '1c:ed:6f:12:34:11',
       'node_name': 'fritz.box',
-      'rx_rate_kbps': None,
+      'rx_rate_kbps': 144400,
       'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-      'tx_rate_kbps': None,
+      'tx_rate_kbps': 130000,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.mock_title',
+    'entity_id': 'sensor.mock_title_connected_devices',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
-    'state': '1',
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.mock_title_2-entry]
-  EntityRegistryEntrySnapshot({
-    'aliases': list([
-      None,
-    ]),
-    'area_id': None,
-    'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
-    'config_entry_id': <ANY>,
-    'config_subentry_id': <ANY>,
-    'device_class': None,
-    'device_id': <ANY>,
-    'disabled_by': None,
-    'domain': 'sensor',
-    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
-    'entity_id': 'sensor.mock_title_2',
-    'has_entity_name': True,
-    'hidden_by': None,
-    'icon': None,
-    'id': <ANY>,
-    'labels': set({
-    }),
-    'name': None,
-    'object_id_base': None,
-    'options': dict({
-    }),
-    'original_device_class': None,
-    'original_icon': None,
-    'original_name': None,
-    'platform': 'fritz',
-    'previous_unique_id': None,
-    'suggested_object_id': None,
-    'supported_features': 0,
-    'translation_key': 'mesh_wifi_devices',
-    'unique_id': '1c:ed:6f:12:34:11_mesh_wifi_devices',
-    'unit_of_measurement': None,
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.mock_title_2-state]
-  StateSnapshot({
-    'attributes': ReadOnlyDict({
-      'friendly_name': 'Mock Title',
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
-    'context': <ANY>,
-    'entity_id': 'sensor.mock_title_2',
-    'last_changed': <ANY>,
-    'last_reported': <ANY>,
-    'last_updated': <ANY>,
-    'state': '0',
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.mock_title_3-entry]
-  EntityRegistryEntrySnapshot({
-    'aliases': list([
-      None,
-    ]),
-    'area_id': None,
-    'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
-    'config_entry_id': <ANY>,
-    'config_subentry_id': <ANY>,
-    'device_class': None,
-    'device_id': <ANY>,
-    'disabled_by': None,
-    'domain': 'sensor',
-    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
-    'entity_id': 'sensor.mock_title_3',
-    'has_entity_name': True,
-    'hidden_by': None,
-    'icon': None,
-    'id': <ANY>,
-    'labels': set({
-    }),
-    'name': None,
-    'object_id_base': None,
-    'options': dict({
-    }),
-    'original_device_class': None,
-    'original_icon': None,
-    'original_name': None,
-    'platform': 'fritz',
-    'previous_unique_id': None,
-    'suggested_object_id': None,
-    'supported_features': 0,
-    'translation_key': 'mesh_lan_devices',
-    'unique_id': '1c:ed:6f:12:34:11_mesh_lan_devices',
-    'unit_of_measurement': None,
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.mock_title_3-state]
-  StateSnapshot({
-    'attributes': ReadOnlyDict({
-      'friendly_name': 'Mock Title',
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
-    'context': <ANY>,
-    'entity_id': 'sensor.mock_title_3',
-    'last_changed': <ANY>,
-    'last_reported': <ANY>,
-    'last_updated': <ANY>,
-    'state': '1',
+    'state': '2',
   })
 # ---
 # name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.mock_title_connection_uptime-entry]
@@ -498,7 +226,7 @@
     'state': '2024-09-01T10:11:33+00:00',
   })
 # ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.mock_title_data_rate-entry]
+# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.mock_title_download_speed-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -514,7 +242,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
-    'entity_id': 'sensor.mock_title_data_rate',
+    'entity_id': 'sensor.mock_title_download_speed',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -522,7 +250,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Data rate',
+    'object_id_base': 'Download speed',
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 2,
@@ -530,7 +258,7 @@
     }),
     'original_device_class': <SensorDeviceClass.DATA_RATE: 'data_rate'>,
     'original_icon': None,
-    'original_name': 'Data rate',
+    'original_name': 'Download speed',
     'platform': 'fritz',
     'previous_unique_id': None,
     'suggested_object_id': None,
@@ -540,78 +268,20 @@
     'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
   })
 # ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.mock_title_data_rate-state]
+# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.mock_title_download_speed-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       'device_class': 'data_rate',
-      'friendly_name': 'Mock Title Data rate',
+      'friendly_name': 'Mock Title Download speed',
       'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
       'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.mock_title_data_rate',
+    'entity_id': 'sensor.mock_title_download_speed',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
-    'state': '0.0',
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.mock_title_data_rate_2-entry]
-  EntityRegistryEntrySnapshot({
-    'aliases': list([
-      None,
-    ]),
-    'area_id': None,
-    'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
-    'config_entry_id': <ANY>,
-    'config_subentry_id': <ANY>,
-    'device_class': None,
-    'device_id': <ANY>,
-    'disabled_by': None,
-    'domain': 'sensor',
-    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
-    'entity_id': 'sensor.mock_title_data_rate_2',
-    'has_entity_name': True,
-    'hidden_by': None,
-    'icon': None,
-    'id': <ANY>,
-    'labels': set({
-    }),
-    'name': None,
-    'object_id_base': 'Data rate',
-    'options': dict({
-      'sensor': dict({
-        'suggested_display_precision': 2,
-      }),
-    }),
-    'original_device_class': <SensorDeviceClass.DATA_RATE: 'data_rate'>,
-    'original_icon': None,
-    'original_name': 'Data rate',
-    'platform': 'fritz',
-    'previous_unique_id': None,
-    'suggested_object_id': None,
-    'supported_features': 0,
-    'translation_key': 'mesh_tx_rate',
-    'unique_id': '1c:ed:6f:12:34:11_mesh_tx_rate',
-    'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.mock_title_data_rate_2-state]
-  StateSnapshot({
-    'attributes': ReadOnlyDict({
-      'device_class': 'data_rate',
-      'friendly_name': 'Mock Title Data rate',
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-      'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
-    }),
-    'context': <ANY>,
-    'entity_id': 'sensor.mock_title_data_rate_2',
-    'last_changed': <ANY>,
-    'last_reported': <ANY>,
-    'last_updated': <ANY>,
-    'state': '0.0',
+    'state': '144.4',
   })
 # ---
 # name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.mock_title_download_throughput-entry]
@@ -886,6 +556,59 @@
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '1.7',
+  })
+# ---
+# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.mock_title_lan_devices-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.mock_title_lan_devices',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'LAN devices',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': None,
+    'original_name': 'LAN devices',
+    'platform': 'fritz',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': 'mesh_lan_devices',
+    'unique_id': '1c:ed:6f:12:34:11_mesh_lan_devices',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.mock_title_lan_devices-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'friendly_name': 'Mock Title LAN devices',
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.mock_title_lan_devices',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '1',
   })
 # ---
 # name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.mock_title_link_download_noise_margin-entry]
@@ -1312,6 +1035,64 @@
     'state': '2105.0',
   })
 # ---
+# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.mock_title_upload_speed-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.mock_title_upload_speed',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Upload speed',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.DATA_RATE: 'data_rate'>,
+    'original_icon': None,
+    'original_name': 'Upload speed',
+    'platform': 'fritz',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': 'mesh_tx_rate',
+    'unique_id': '1c:ed:6f:12:34:11_mesh_tx_rate',
+    'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
+  })
+# ---
+# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.mock_title_upload_speed-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'device_class': 'data_rate',
+      'friendly_name': 'Mock Title Upload speed',
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.mock_title_upload_speed',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '130.0',
+  })
+# ---
 # name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.mock_title_upload_throughput-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
@@ -1421,7 +1202,7 @@
     'state': '2024-08-03T16:30:21+00:00',
   })
 # ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.printer_data_rate-entry]
+# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.mock_title_wi_fi_devices-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -1437,7 +1218,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
-    'entity_id': 'sensor.printer_data_rate',
+    'entity_id': 'sensor.mock_title_wi_fi_devices',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -1445,470 +1226,12 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Data rate',
-    'options': dict({
-      'sensor': dict({
-        'suggested_display_precision': 2,
-      }),
-    }),
-    'original_device_class': <SensorDeviceClass.DATA_RATE: 'data_rate'>,
-    'original_icon': None,
-    'original_name': 'Data rate',
-    'platform': 'fritz',
-    'previous_unique_id': None,
-    'suggested_object_id': None,
-    'supported_features': 0,
-    'translation_key': 'device_cur_rx_rate',
-    'unique_id': 'AA:BB:CC:00:11:22_cur_rx_rate',
-    'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.printer_data_rate-state]
-  StateSnapshot({
-    'attributes': ReadOnlyDict({
-      'device_class': 'data_rate',
-      'friendly_name': 'printer Data rate',
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-      'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
-    }),
-    'context': <ANY>,
-    'entity_id': 'sensor.printer_data_rate',
-    'last_changed': <ANY>,
-    'last_reported': <ANY>,
-    'last_updated': <ANY>,
-    'state': '0.0',
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.printer_data_rate_2-entry]
-  EntityRegistryEntrySnapshot({
-    'aliases': list([
-      None,
-    ]),
-    'area_id': None,
-    'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
-    'config_entry_id': <ANY>,
-    'config_subentry_id': <ANY>,
-    'device_class': None,
-    'device_id': <ANY>,
-    'disabled_by': None,
-    'domain': 'sensor',
-    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
-    'entity_id': 'sensor.printer_data_rate_2',
-    'has_entity_name': True,
-    'hidden_by': None,
-    'icon': None,
-    'id': <ANY>,
-    'labels': set({
-    }),
-    'name': None,
-    'object_id_base': 'Data rate',
-    'options': dict({
-      'sensor': dict({
-        'suggested_display_precision': 2,
-      }),
-    }),
-    'original_device_class': <SensorDeviceClass.DATA_RATE: 'data_rate'>,
-    'original_icon': None,
-    'original_name': 'Data rate',
-    'platform': 'fritz',
-    'previous_unique_id': None,
-    'suggested_object_id': None,
-    'supported_features': 0,
-    'translation_key': 'device_cur_tx_rate',
-    'unique_id': 'AA:BB:CC:00:11:22_cur_tx_rate',
-    'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.printer_data_rate_2-state]
-  StateSnapshot({
-    'attributes': ReadOnlyDict({
-      'device_class': 'data_rate',
-      'friendly_name': 'printer Data rate',
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-      'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
-    }),
-    'context': <ANY>,
-    'entity_id': 'sensor.printer_data_rate_2',
-    'last_changed': <ANY>,
-    'last_reported': <ANY>,
-    'last_updated': <ANY>,
-    'state': '0.0',
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.fritz_repeater-entry]
-  EntityRegistryEntrySnapshot({
-    'aliases': list([
-      None,
-    ]),
-    'area_id': None,
-    'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
-    'config_entry_id': <ANY>,
-    'config_subentry_id': <ANY>,
-    'device_class': None,
-    'device_id': <ANY>,
-    'disabled_by': None,
-    'domain': 'sensor',
-    'entity_category': None,
-    'entity_id': 'sensor.fritz_repeater',
-    'has_entity_name': True,
-    'hidden_by': None,
-    'icon': None,
-    'id': <ANY>,
-    'labels': set({
-    }),
-    'name': None,
-    'object_id_base': None,
+    'object_id_base': 'Wi-Fi devices',
     'options': dict({
     }),
     'original_device_class': None,
     'original_icon': None,
-    'original_name': None,
-    'platform': 'fritz',
-    'previous_unique_id': None,
-    'suggested_object_id': None,
-    'supported_features': 0,
-    'translation_key': 'mesh_connected_devices',
-    'unique_id': '1c:ed:6f:12:34:21_mesh_connected_devices',
-    'unit_of_measurement': None,
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.fritz_repeater-state]
-  StateSnapshot({
-    'attributes': ReadOnlyDict({
-      'friendly_name': 'fritz-repeater',
-      'fritz_host': 'fake_host',
-      'fritz_unique_id': '1CED6F123411',
-      'is_master': False,
-      'node_mac': '1c:ed:6f:12:34:21',
-      'node_name': 'fritz-repeater',
-      'rx_rate_kbps': None,
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-      'tx_rate_kbps': None,
-    }),
-    'context': <ANY>,
-    'entity_id': 'sensor.fritz_repeater',
-    'last_changed': <ANY>,
-    'last_reported': <ANY>,
-    'last_updated': <ANY>,
-    'state': '0',
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.fritz_repeater_2-entry]
-  EntityRegistryEntrySnapshot({
-    'aliases': list([
-      None,
-    ]),
-    'area_id': None,
-    'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
-    'config_entry_id': <ANY>,
-    'config_subentry_id': <ANY>,
-    'device_class': None,
-    'device_id': <ANY>,
-    'disabled_by': None,
-    'domain': 'sensor',
-    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
-    'entity_id': 'sensor.fritz_repeater_2',
-    'has_entity_name': True,
-    'hidden_by': None,
-    'icon': None,
-    'id': <ANY>,
-    'labels': set({
-    }),
-    'name': None,
-    'object_id_base': None,
-    'options': dict({
-    }),
-    'original_device_class': None,
-    'original_icon': None,
-    'original_name': None,
-    'platform': 'fritz',
-    'previous_unique_id': None,
-    'suggested_object_id': None,
-    'supported_features': 0,
-    'translation_key': 'mesh_wifi_devices',
-    'unique_id': '1c:ed:6f:12:34:21_mesh_wifi_devices',
-    'unit_of_measurement': None,
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.fritz_repeater_2-state]
-  StateSnapshot({
-    'attributes': ReadOnlyDict({
-      'friendly_name': 'fritz-repeater',
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
-    'context': <ANY>,
-    'entity_id': 'sensor.fritz_repeater_2',
-    'last_changed': <ANY>,
-    'last_reported': <ANY>,
-    'last_updated': <ANY>,
-    'state': '0',
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.fritz_repeater_3-entry]
-  EntityRegistryEntrySnapshot({
-    'aliases': list([
-      None,
-    ]),
-    'area_id': None,
-    'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
-    'config_entry_id': <ANY>,
-    'config_subentry_id': <ANY>,
-    'device_class': None,
-    'device_id': <ANY>,
-    'disabled_by': None,
-    'domain': 'sensor',
-    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
-    'entity_id': 'sensor.fritz_repeater_3',
-    'has_entity_name': True,
-    'hidden_by': None,
-    'icon': None,
-    'id': <ANY>,
-    'labels': set({
-    }),
-    'name': None,
-    'object_id_base': None,
-    'options': dict({
-    }),
-    'original_device_class': None,
-    'original_icon': None,
-    'original_name': None,
-    'platform': 'fritz',
-    'previous_unique_id': None,
-    'suggested_object_id': None,
-    'supported_features': 0,
-    'translation_key': 'mesh_lan_devices',
-    'unique_id': '1c:ed:6f:12:34:21_mesh_lan_devices',
-    'unit_of_measurement': None,
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.fritz_repeater_3-state]
-  StateSnapshot({
-    'attributes': ReadOnlyDict({
-      'friendly_name': 'fritz-repeater',
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
-    'context': <ANY>,
-    'entity_id': 'sensor.fritz_repeater_3',
-    'last_changed': <ANY>,
-    'last_reported': <ANY>,
-    'last_updated': <ANY>,
-    'state': '0',
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.fritz_repeater_data_rate-entry]
-  EntityRegistryEntrySnapshot({
-    'aliases': list([
-      None,
-    ]),
-    'area_id': None,
-    'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
-    'config_entry_id': <ANY>,
-    'config_subentry_id': <ANY>,
-    'device_class': None,
-    'device_id': <ANY>,
-    'disabled_by': None,
-    'domain': 'sensor',
-    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
-    'entity_id': 'sensor.fritz_repeater_data_rate',
-    'has_entity_name': True,
-    'hidden_by': None,
-    'icon': None,
-    'id': <ANY>,
-    'labels': set({
-    }),
-    'name': None,
-    'object_id_base': 'Data rate',
-    'options': dict({
-      'sensor': dict({
-        'suggested_display_precision': 2,
-      }),
-    }),
-    'original_device_class': <SensorDeviceClass.DATA_RATE: 'data_rate'>,
-    'original_icon': None,
-    'original_name': 'Data rate',
-    'platform': 'fritz',
-    'previous_unique_id': None,
-    'suggested_object_id': None,
-    'supported_features': 0,
-    'translation_key': 'mesh_rx_rate',
-    'unique_id': '1c:ed:6f:12:34:21_mesh_rx_rate',
-    'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.fritz_repeater_data_rate-state]
-  StateSnapshot({
-    'attributes': ReadOnlyDict({
-      'device_class': 'data_rate',
-      'friendly_name': 'fritz-repeater Data rate',
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-      'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
-    }),
-    'context': <ANY>,
-    'entity_id': 'sensor.fritz_repeater_data_rate',
-    'last_changed': <ANY>,
-    'last_reported': <ANY>,
-    'last_updated': <ANY>,
-    'state': 'unknown',
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.fritz_repeater_data_rate_2-entry]
-  EntityRegistryEntrySnapshot({
-    'aliases': list([
-      None,
-    ]),
-    'area_id': None,
-    'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
-    'config_entry_id': <ANY>,
-    'config_subentry_id': <ANY>,
-    'device_class': None,
-    'device_id': <ANY>,
-    'disabled_by': None,
-    'domain': 'sensor',
-    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
-    'entity_id': 'sensor.fritz_repeater_data_rate_2',
-    'has_entity_name': True,
-    'hidden_by': None,
-    'icon': None,
-    'id': <ANY>,
-    'labels': set({
-    }),
-    'name': None,
-    'object_id_base': 'Data rate',
-    'options': dict({
-      'sensor': dict({
-        'suggested_display_precision': 2,
-      }),
-    }),
-    'original_device_class': <SensorDeviceClass.DATA_RATE: 'data_rate'>,
-    'original_icon': None,
-    'original_name': 'Data rate',
-    'platform': 'fritz',
-    'previous_unique_id': None,
-    'suggested_object_id': None,
-    'supported_features': 0,
-    'translation_key': 'mesh_tx_rate',
-    'unique_id': '1c:ed:6f:12:34:21_mesh_tx_rate',
-    'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.fritz_repeater_data_rate_2-state]
-  StateSnapshot({
-    'attributes': ReadOnlyDict({
-      'device_class': 'data_rate',
-      'friendly_name': 'fritz-repeater Data rate',
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-      'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
-    }),
-    'context': <ANY>,
-    'entity_id': 'sensor.fritz_repeater_data_rate_2',
-    'last_changed': <ANY>,
-    'last_reported': <ANY>,
-    'last_updated': <ANY>,
-    'state': 'unknown',
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.mock_title-entry]
-  EntityRegistryEntrySnapshot({
-    'aliases': list([
-      None,
-    ]),
-    'area_id': None,
-    'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
-    'config_entry_id': <ANY>,
-    'config_subentry_id': <ANY>,
-    'device_class': None,
-    'device_id': <ANY>,
-    'disabled_by': None,
-    'domain': 'sensor',
-    'entity_category': None,
-    'entity_id': 'sensor.mock_title',
-    'has_entity_name': True,
-    'hidden_by': None,
-    'icon': None,
-    'id': <ANY>,
-    'labels': set({
-    }),
-    'name': None,
-    'object_id_base': None,
-    'options': dict({
-    }),
-    'original_device_class': None,
-    'original_icon': None,
-    'original_name': None,
-    'platform': 'fritz',
-    'previous_unique_id': None,
-    'suggested_object_id': None,
-    'supported_features': 0,
-    'translation_key': 'mesh_connected_devices',
-    'unique_id': '1c:ed:6f:12:34:11_mesh_connected_devices',
-    'unit_of_measurement': None,
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.mock_title-state]
-  StateSnapshot({
-    'attributes': ReadOnlyDict({
-      'friendly_name': 'Mock Title',
-      'fritz_host': 'fake_host',
-      'fritz_unique_id': '1CED6F123411',
-      'is_master': True,
-      'node_mac': '1c:ed:6f:12:34:11',
-      'node_name': 'fritz.box',
-      'rx_rate_kbps': None,
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-      'tx_rate_kbps': None,
-    }),
-    'context': <ANY>,
-    'entity_id': 'sensor.mock_title',
-    'last_changed': <ANY>,
-    'last_reported': <ANY>,
-    'last_updated': <ANY>,
-    'state': '1',
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.mock_title_2-entry]
-  EntityRegistryEntrySnapshot({
-    'aliases': list([
-      None,
-    ]),
-    'area_id': None,
-    'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
-    'config_entry_id': <ANY>,
-    'config_subentry_id': <ANY>,
-    'device_class': None,
-    'device_id': <ANY>,
-    'disabled_by': None,
-    'domain': 'sensor',
-    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
-    'entity_id': 'sensor.mock_title_2',
-    'has_entity_name': True,
-    'hidden_by': None,
-    'icon': None,
-    'id': <ANY>,
-    'labels': set({
-    }),
-    'name': None,
-    'object_id_base': None,
-    'options': dict({
-    }),
-    'original_device_class': None,
-    'original_icon': None,
-    'original_name': None,
+    'original_name': 'Wi-Fi devices',
     'platform': 'fritz',
     'previous_unique_id': None,
     'suggested_object_id': None,
@@ -1918,21 +1241,21 @@
     'unit_of_measurement': None,
   })
 # ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.mock_title_2-state]
+# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.mock_title_wi_fi_devices-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'friendly_name': 'Mock Title',
+      'friendly_name': 'Mock Title Wi-Fi devices',
       'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.mock_title_2',
+    'entity_id': 'sensor.mock_title_wi_fi_devices',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
-    'state': '0',
+    'state': '1',
   })
 # ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.mock_title_3-entry]
+# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.printer_download_speed-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -1948,7 +1271,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
-    'entity_id': 'sensor.mock_title_3',
+    'entity_id': 'sensor.printer_download_speed',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -1956,33 +1279,272 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': None,
+    'object_id_base': 'Download speed',
     'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
     }),
-    'original_device_class': None,
+    'original_device_class': <SensorDeviceClass.DATA_RATE: 'data_rate'>,
     'original_icon': None,
-    'original_name': None,
+    'original_name': 'Download speed',
     'platform': 'fritz',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': 'mesh_lan_devices',
-    'unique_id': '1c:ed:6f:12:34:11_mesh_lan_devices',
-    'unit_of_measurement': None,
+    'translation_key': 'device_cur_rx_rate',
+    'unique_id': 'AA:BB:CC:00:11:22_cur_rx_rate',
+    'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
   })
 # ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.mock_title_3-state]
+# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.printer_download_speed-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'friendly_name': 'Mock Title',
+      'device_class': 'data_rate',
+      'friendly_name': 'printer Download speed',
       'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.mock_title_3',
+    'entity_id': 'sensor.printer_download_speed',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
-    'state': '1',
+    'state': '0.0',
+  })
+# ---
+# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.printer_upload_speed-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.printer_upload_speed',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Upload speed',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.DATA_RATE: 'data_rate'>,
+    'original_icon': None,
+    'original_name': 'Upload speed',
+    'platform': 'fritz',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': 'device_cur_tx_rate',
+    'unique_id': 'AA:BB:CC:00:11:22_cur_tx_rate',
+    'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
+  })
+# ---
+# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.printer_upload_speed-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'device_class': 'data_rate',
+      'friendly_name': 'printer Upload speed',
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.printer_upload_speed',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '0.0',
+  })
+# ---
+# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.fritz_repeater_download_speed-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.fritz_repeater_download_speed',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Download speed',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.DATA_RATE: 'data_rate'>,
+    'original_icon': None,
+    'original_name': 'Download speed',
+    'platform': 'fritz',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': 'device_cur_rx_rate',
+    'unique_id': '1C:ED:6F:12:34:21_cur_rx_rate',
+    'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
+  })
+# ---
+# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.fritz_repeater_download_speed-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'device_class': 'data_rate',
+      'friendly_name': 'fritz-repeater Download speed',
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_repeater_download_speed',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '144.4',
+  })
+# ---
+# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.fritz_repeater_upload_speed-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.fritz_repeater_upload_speed',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Upload speed',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.DATA_RATE: 'data_rate'>,
+    'original_icon': None,
+    'original_name': 'Upload speed',
+    'platform': 'fritz',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': 'device_cur_tx_rate',
+    'unique_id': '1C:ED:6F:12:34:21_cur_tx_rate',
+    'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
+  })
+# ---
+# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.fritz_repeater_upload_speed-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'device_class': 'data_rate',
+      'friendly_name': 'fritz-repeater Upload speed',
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_repeater_upload_speed',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '130.0',
+  })
+# ---
+# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.mock_title_connected_devices-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': None,
+    'entity_id': 'sensor.mock_title_connected_devices',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Connected devices',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': None,
+    'original_name': 'Connected devices',
+    'platform': 'fritz',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': 'mesh_connected_devices',
+    'unique_id': '1c:ed:6f:12:34:11_mesh_connected_devices',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.mock_title_connected_devices-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'friendly_name': 'Mock Title Connected devices',
+      'fritz_host': 'fake_host',
+      'fritz_unique_id': '1CED6F123411',
+      'is_master': True,
+      'node_mac': '1c:ed:6f:12:34:11',
+      'node_name': 'fritz.box',
+      'rx_rate_kbps': 144400,
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'tx_rate_kbps': 130000,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.mock_title_connected_devices',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '2',
   })
 # ---
 # name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.mock_title_connection_uptime-entry]
@@ -2036,7 +1598,7 @@
     'state': '2024-09-01T10:11:33+00:00',
   })
 # ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.mock_title_data_rate-entry]
+# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.mock_title_download_speed-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -2052,7 +1614,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
-    'entity_id': 'sensor.mock_title_data_rate',
+    'entity_id': 'sensor.mock_title_download_speed',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -2060,7 +1622,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Data rate',
+    'object_id_base': 'Download speed',
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 2,
@@ -2068,7 +1630,7 @@
     }),
     'original_device_class': <SensorDeviceClass.DATA_RATE: 'data_rate'>,
     'original_icon': None,
-    'original_name': 'Data rate',
+    'original_name': 'Download speed',
     'platform': 'fritz',
     'previous_unique_id': None,
     'suggested_object_id': None,
@@ -2078,78 +1640,20 @@
     'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
   })
 # ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.mock_title_data_rate-state]
+# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.mock_title_download_speed-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       'device_class': 'data_rate',
-      'friendly_name': 'Mock Title Data rate',
+      'friendly_name': 'Mock Title Download speed',
       'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
       'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.mock_title_data_rate',
+    'entity_id': 'sensor.mock_title_download_speed',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
-    'state': '0.0',
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.mock_title_data_rate_2-entry]
-  EntityRegistryEntrySnapshot({
-    'aliases': list([
-      None,
-    ]),
-    'area_id': None,
-    'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
-    'config_entry_id': <ANY>,
-    'config_subentry_id': <ANY>,
-    'device_class': None,
-    'device_id': <ANY>,
-    'disabled_by': None,
-    'domain': 'sensor',
-    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
-    'entity_id': 'sensor.mock_title_data_rate_2',
-    'has_entity_name': True,
-    'hidden_by': None,
-    'icon': None,
-    'id': <ANY>,
-    'labels': set({
-    }),
-    'name': None,
-    'object_id_base': 'Data rate',
-    'options': dict({
-      'sensor': dict({
-        'suggested_display_precision': 2,
-      }),
-    }),
-    'original_device_class': <SensorDeviceClass.DATA_RATE: 'data_rate'>,
-    'original_icon': None,
-    'original_name': 'Data rate',
-    'platform': 'fritz',
-    'previous_unique_id': None,
-    'suggested_object_id': None,
-    'supported_features': 0,
-    'translation_key': 'mesh_tx_rate',
-    'unique_id': '1c:ed:6f:12:34:11_mesh_tx_rate',
-    'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.mock_title_data_rate_2-state]
-  StateSnapshot({
-    'attributes': ReadOnlyDict({
-      'device_class': 'data_rate',
-      'friendly_name': 'Mock Title Data rate',
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-      'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
-    }),
-    'context': <ANY>,
-    'entity_id': 'sensor.mock_title_data_rate_2',
-    'last_changed': <ANY>,
-    'last_reported': <ANY>,
-    'last_updated': <ANY>,
-    'state': '0.0',
+    'state': '144.4',
   })
 # ---
 # name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.mock_title_download_throughput-entry]
@@ -2424,6 +1928,59 @@
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '1.7',
+  })
+# ---
+# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.mock_title_lan_devices-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.mock_title_lan_devices',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'LAN devices',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': None,
+    'original_name': 'LAN devices',
+    'platform': 'fritz',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': 'mesh_lan_devices',
+    'unique_id': '1c:ed:6f:12:34:11_mesh_lan_devices',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.mock_title_lan_devices-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'friendly_name': 'Mock Title LAN devices',
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.mock_title_lan_devices',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '1',
   })
 # ---
 # name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.mock_title_link_download_noise_margin-entry]
@@ -2850,6 +2407,64 @@
     'state': '2105.0',
   })
 # ---
+# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.mock_title_upload_speed-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.mock_title_upload_speed',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Upload speed',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.DATA_RATE: 'data_rate'>,
+    'original_icon': None,
+    'original_name': 'Upload speed',
+    'platform': 'fritz',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': 'mesh_tx_rate',
+    'unique_id': '1c:ed:6f:12:34:11_mesh_tx_rate',
+    'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
+  })
+# ---
+# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.mock_title_upload_speed-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'device_class': 'data_rate',
+      'friendly_name': 'Mock Title Upload speed',
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.mock_title_upload_speed',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '130.0',
+  })
+# ---
 # name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.mock_title_upload_throughput-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
@@ -2959,7 +2574,7 @@
     'state': '2024-08-03T16:30:21+00:00',
   })
 # ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.printer_data_rate-entry]
+# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.mock_title_wi_fi_devices-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -2975,7 +2590,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
-    'entity_id': 'sensor.printer_data_rate',
+    'entity_id': 'sensor.mock_title_wi_fi_devices',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -2983,470 +2598,12 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Data rate',
-    'options': dict({
-      'sensor': dict({
-        'suggested_display_precision': 2,
-      }),
-    }),
-    'original_device_class': <SensorDeviceClass.DATA_RATE: 'data_rate'>,
-    'original_icon': None,
-    'original_name': 'Data rate',
-    'platform': 'fritz',
-    'previous_unique_id': None,
-    'suggested_object_id': None,
-    'supported_features': 0,
-    'translation_key': 'device_cur_rx_rate',
-    'unique_id': 'AA:BB:CC:00:11:22_cur_rx_rate',
-    'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.printer_data_rate-state]
-  StateSnapshot({
-    'attributes': ReadOnlyDict({
-      'device_class': 'data_rate',
-      'friendly_name': 'printer Data rate',
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-      'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
-    }),
-    'context': <ANY>,
-    'entity_id': 'sensor.printer_data_rate',
-    'last_changed': <ANY>,
-    'last_reported': <ANY>,
-    'last_updated': <ANY>,
-    'state': '0.0',
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.printer_data_rate_2-entry]
-  EntityRegistryEntrySnapshot({
-    'aliases': list([
-      None,
-    ]),
-    'area_id': None,
-    'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
-    'config_entry_id': <ANY>,
-    'config_subentry_id': <ANY>,
-    'device_class': None,
-    'device_id': <ANY>,
-    'disabled_by': None,
-    'domain': 'sensor',
-    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
-    'entity_id': 'sensor.printer_data_rate_2',
-    'has_entity_name': True,
-    'hidden_by': None,
-    'icon': None,
-    'id': <ANY>,
-    'labels': set({
-    }),
-    'name': None,
-    'object_id_base': 'Data rate',
-    'options': dict({
-      'sensor': dict({
-        'suggested_display_precision': 2,
-      }),
-    }),
-    'original_device_class': <SensorDeviceClass.DATA_RATE: 'data_rate'>,
-    'original_icon': None,
-    'original_name': 'Data rate',
-    'platform': 'fritz',
-    'previous_unique_id': None,
-    'suggested_object_id': None,
-    'supported_features': 0,
-    'translation_key': 'device_cur_tx_rate',
-    'unique_id': 'AA:BB:CC:00:11:22_cur_tx_rate',
-    'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.printer_data_rate_2-state]
-  StateSnapshot({
-    'attributes': ReadOnlyDict({
-      'device_class': 'data_rate',
-      'friendly_name': 'printer Data rate',
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-      'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
-    }),
-    'context': <ANY>,
-    'entity_id': 'sensor.printer_data_rate_2',
-    'last_changed': <ANY>,
-    'last_reported': <ANY>,
-    'last_updated': <ANY>,
-    'state': '0.0',
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.fritz_repeater-entry]
-  EntityRegistryEntrySnapshot({
-    'aliases': list([
-      None,
-    ]),
-    'area_id': None,
-    'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
-    'config_entry_id': <ANY>,
-    'config_subentry_id': <ANY>,
-    'device_class': None,
-    'device_id': <ANY>,
-    'disabled_by': None,
-    'domain': 'sensor',
-    'entity_category': None,
-    'entity_id': 'sensor.fritz_repeater',
-    'has_entity_name': True,
-    'hidden_by': None,
-    'icon': None,
-    'id': <ANY>,
-    'labels': set({
-    }),
-    'name': None,
-    'object_id_base': None,
+    'object_id_base': 'Wi-Fi devices',
     'options': dict({
     }),
     'original_device_class': None,
     'original_icon': None,
-    'original_name': None,
-    'platform': 'fritz',
-    'previous_unique_id': None,
-    'suggested_object_id': None,
-    'supported_features': 0,
-    'translation_key': 'mesh_connected_devices',
-    'unique_id': '1c:ed:6f:12:34:21_mesh_connected_devices',
-    'unit_of_measurement': None,
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.fritz_repeater-state]
-  StateSnapshot({
-    'attributes': ReadOnlyDict({
-      'friendly_name': 'fritz-repeater',
-      'fritz_host': 'fake_host',
-      'fritz_unique_id': '1CED6F123411',
-      'is_master': False,
-      'node_mac': '1c:ed:6f:12:34:21',
-      'node_name': 'fritz-repeater',
-      'rx_rate_kbps': None,
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-      'tx_rate_kbps': None,
-    }),
-    'context': <ANY>,
-    'entity_id': 'sensor.fritz_repeater',
-    'last_changed': <ANY>,
-    'last_reported': <ANY>,
-    'last_updated': <ANY>,
-    'state': '0',
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.fritz_repeater_2-entry]
-  EntityRegistryEntrySnapshot({
-    'aliases': list([
-      None,
-    ]),
-    'area_id': None,
-    'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
-    'config_entry_id': <ANY>,
-    'config_subentry_id': <ANY>,
-    'device_class': None,
-    'device_id': <ANY>,
-    'disabled_by': None,
-    'domain': 'sensor',
-    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
-    'entity_id': 'sensor.fritz_repeater_2',
-    'has_entity_name': True,
-    'hidden_by': None,
-    'icon': None,
-    'id': <ANY>,
-    'labels': set({
-    }),
-    'name': None,
-    'object_id_base': None,
-    'options': dict({
-    }),
-    'original_device_class': None,
-    'original_icon': None,
-    'original_name': None,
-    'platform': 'fritz',
-    'previous_unique_id': None,
-    'suggested_object_id': None,
-    'supported_features': 0,
-    'translation_key': 'mesh_wifi_devices',
-    'unique_id': '1c:ed:6f:12:34:21_mesh_wifi_devices',
-    'unit_of_measurement': None,
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.fritz_repeater_2-state]
-  StateSnapshot({
-    'attributes': ReadOnlyDict({
-      'friendly_name': 'fritz-repeater',
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
-    'context': <ANY>,
-    'entity_id': 'sensor.fritz_repeater_2',
-    'last_changed': <ANY>,
-    'last_reported': <ANY>,
-    'last_updated': <ANY>,
-    'state': '0',
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.fritz_repeater_3-entry]
-  EntityRegistryEntrySnapshot({
-    'aliases': list([
-      None,
-    ]),
-    'area_id': None,
-    'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
-    'config_entry_id': <ANY>,
-    'config_subentry_id': <ANY>,
-    'device_class': None,
-    'device_id': <ANY>,
-    'disabled_by': None,
-    'domain': 'sensor',
-    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
-    'entity_id': 'sensor.fritz_repeater_3',
-    'has_entity_name': True,
-    'hidden_by': None,
-    'icon': None,
-    'id': <ANY>,
-    'labels': set({
-    }),
-    'name': None,
-    'object_id_base': None,
-    'options': dict({
-    }),
-    'original_device_class': None,
-    'original_icon': None,
-    'original_name': None,
-    'platform': 'fritz',
-    'previous_unique_id': None,
-    'suggested_object_id': None,
-    'supported_features': 0,
-    'translation_key': 'mesh_lan_devices',
-    'unique_id': '1c:ed:6f:12:34:21_mesh_lan_devices',
-    'unit_of_measurement': None,
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.fritz_repeater_3-state]
-  StateSnapshot({
-    'attributes': ReadOnlyDict({
-      'friendly_name': 'fritz-repeater',
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
-    'context': <ANY>,
-    'entity_id': 'sensor.fritz_repeater_3',
-    'last_changed': <ANY>,
-    'last_reported': <ANY>,
-    'last_updated': <ANY>,
-    'state': '0',
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.fritz_repeater_data_rate-entry]
-  EntityRegistryEntrySnapshot({
-    'aliases': list([
-      None,
-    ]),
-    'area_id': None,
-    'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
-    'config_entry_id': <ANY>,
-    'config_subentry_id': <ANY>,
-    'device_class': None,
-    'device_id': <ANY>,
-    'disabled_by': None,
-    'domain': 'sensor',
-    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
-    'entity_id': 'sensor.fritz_repeater_data_rate',
-    'has_entity_name': True,
-    'hidden_by': None,
-    'icon': None,
-    'id': <ANY>,
-    'labels': set({
-    }),
-    'name': None,
-    'object_id_base': 'Data rate',
-    'options': dict({
-      'sensor': dict({
-        'suggested_display_precision': 2,
-      }),
-    }),
-    'original_device_class': <SensorDeviceClass.DATA_RATE: 'data_rate'>,
-    'original_icon': None,
-    'original_name': 'Data rate',
-    'platform': 'fritz',
-    'previous_unique_id': None,
-    'suggested_object_id': None,
-    'supported_features': 0,
-    'translation_key': 'mesh_rx_rate',
-    'unique_id': '1c:ed:6f:12:34:21_mesh_rx_rate',
-    'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.fritz_repeater_data_rate-state]
-  StateSnapshot({
-    'attributes': ReadOnlyDict({
-      'device_class': 'data_rate',
-      'friendly_name': 'fritz-repeater Data rate',
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-      'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
-    }),
-    'context': <ANY>,
-    'entity_id': 'sensor.fritz_repeater_data_rate',
-    'last_changed': <ANY>,
-    'last_reported': <ANY>,
-    'last_updated': <ANY>,
-    'state': 'unknown',
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.fritz_repeater_data_rate_2-entry]
-  EntityRegistryEntrySnapshot({
-    'aliases': list([
-      None,
-    ]),
-    'area_id': None,
-    'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
-    'config_entry_id': <ANY>,
-    'config_subentry_id': <ANY>,
-    'device_class': None,
-    'device_id': <ANY>,
-    'disabled_by': None,
-    'domain': 'sensor',
-    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
-    'entity_id': 'sensor.fritz_repeater_data_rate_2',
-    'has_entity_name': True,
-    'hidden_by': None,
-    'icon': None,
-    'id': <ANY>,
-    'labels': set({
-    }),
-    'name': None,
-    'object_id_base': 'Data rate',
-    'options': dict({
-      'sensor': dict({
-        'suggested_display_precision': 2,
-      }),
-    }),
-    'original_device_class': <SensorDeviceClass.DATA_RATE: 'data_rate'>,
-    'original_icon': None,
-    'original_name': 'Data rate',
-    'platform': 'fritz',
-    'previous_unique_id': None,
-    'suggested_object_id': None,
-    'supported_features': 0,
-    'translation_key': 'mesh_tx_rate',
-    'unique_id': '1c:ed:6f:12:34:21_mesh_tx_rate',
-    'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.fritz_repeater_data_rate_2-state]
-  StateSnapshot({
-    'attributes': ReadOnlyDict({
-      'device_class': 'data_rate',
-      'friendly_name': 'fritz-repeater Data rate',
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-      'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
-    }),
-    'context': <ANY>,
-    'entity_id': 'sensor.fritz_repeater_data_rate_2',
-    'last_changed': <ANY>,
-    'last_reported': <ANY>,
-    'last_updated': <ANY>,
-    'state': 'unknown',
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.mock_title-entry]
-  EntityRegistryEntrySnapshot({
-    'aliases': list([
-      None,
-    ]),
-    'area_id': None,
-    'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
-    'config_entry_id': <ANY>,
-    'config_subentry_id': <ANY>,
-    'device_class': None,
-    'device_id': <ANY>,
-    'disabled_by': None,
-    'domain': 'sensor',
-    'entity_category': None,
-    'entity_id': 'sensor.mock_title',
-    'has_entity_name': True,
-    'hidden_by': None,
-    'icon': None,
-    'id': <ANY>,
-    'labels': set({
-    }),
-    'name': None,
-    'object_id_base': None,
-    'options': dict({
-    }),
-    'original_device_class': None,
-    'original_icon': None,
-    'original_name': None,
-    'platform': 'fritz',
-    'previous_unique_id': None,
-    'suggested_object_id': None,
-    'supported_features': 0,
-    'translation_key': 'mesh_connected_devices',
-    'unique_id': '1c:ed:6f:12:34:11_mesh_connected_devices',
-    'unit_of_measurement': None,
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.mock_title-state]
-  StateSnapshot({
-    'attributes': ReadOnlyDict({
-      'friendly_name': 'Mock Title',
-      'fritz_host': 'fake_host',
-      'fritz_unique_id': '1CED6F123411',
-      'is_master': True,
-      'node_mac': '1c:ed:6f:12:34:11',
-      'node_name': 'fritz.box',
-      'rx_rate_kbps': None,
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-      'tx_rate_kbps': None,
-    }),
-    'context': <ANY>,
-    'entity_id': 'sensor.mock_title',
-    'last_changed': <ANY>,
-    'last_reported': <ANY>,
-    'last_updated': <ANY>,
-    'state': '1',
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.mock_title_2-entry]
-  EntityRegistryEntrySnapshot({
-    'aliases': list([
-      None,
-    ]),
-    'area_id': None,
-    'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
-    'config_entry_id': <ANY>,
-    'config_subentry_id': <ANY>,
-    'device_class': None,
-    'device_id': <ANY>,
-    'disabled_by': None,
-    'domain': 'sensor',
-    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
-    'entity_id': 'sensor.mock_title_2',
-    'has_entity_name': True,
-    'hidden_by': None,
-    'icon': None,
-    'id': <ANY>,
-    'labels': set({
-    }),
-    'name': None,
-    'object_id_base': None,
-    'options': dict({
-    }),
-    'original_device_class': None,
-    'original_icon': None,
-    'original_name': None,
+    'original_name': 'Wi-Fi devices',
     'platform': 'fritz',
     'previous_unique_id': None,
     'suggested_object_id': None,
@@ -3456,21 +2613,21 @@
     'unit_of_measurement': None,
   })
 # ---
-# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.mock_title_2-state]
+# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.mock_title_wi_fi_devices-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'friendly_name': 'Mock Title',
+      'friendly_name': 'Mock Title Wi-Fi devices',
       'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.mock_title_2',
+    'entity_id': 'sensor.mock_title_wi_fi_devices',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
-    'state': '0',
+    'state': '1',
   })
 # ---
-# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.mock_title_3-entry]
+# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.printer_download_speed-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -3486,7 +2643,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
-    'entity_id': 'sensor.mock_title_3',
+    'entity_id': 'sensor.printer_download_speed',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -3494,33 +2651,272 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': None,
+    'object_id_base': 'Download speed',
     'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
     }),
-    'original_device_class': None,
+    'original_device_class': <SensorDeviceClass.DATA_RATE: 'data_rate'>,
     'original_icon': None,
-    'original_name': None,
+    'original_name': 'Download speed',
     'platform': 'fritz',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': 'mesh_lan_devices',
-    'unique_id': '1c:ed:6f:12:34:11_mesh_lan_devices',
-    'unit_of_measurement': None,
+    'translation_key': 'device_cur_rx_rate',
+    'unique_id': 'AA:BB:CC:00:11:22_cur_rx_rate',
+    'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
   })
 # ---
-# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.mock_title_3-state]
+# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.printer_download_speed-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'friendly_name': 'Mock Title',
+      'device_class': 'data_rate',
+      'friendly_name': 'printer Download speed',
       'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.mock_title_3',
+    'entity_id': 'sensor.printer_download_speed',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
-    'state': '1',
+    'state': '0.0',
+  })
+# ---
+# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.printer_upload_speed-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.printer_upload_speed',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Upload speed',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.DATA_RATE: 'data_rate'>,
+    'original_icon': None,
+    'original_name': 'Upload speed',
+    'platform': 'fritz',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': 'device_cur_tx_rate',
+    'unique_id': 'AA:BB:CC:00:11:22_cur_tx_rate',
+    'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
+  })
+# ---
+# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.printer_upload_speed-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'device_class': 'data_rate',
+      'friendly_name': 'printer Upload speed',
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.printer_upload_speed',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '0.0',
+  })
+# ---
+# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.fritz_repeater_download_speed-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.fritz_repeater_download_speed',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Download speed',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.DATA_RATE: 'data_rate'>,
+    'original_icon': None,
+    'original_name': 'Download speed',
+    'platform': 'fritz',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': 'device_cur_rx_rate',
+    'unique_id': '1C:ED:6F:12:34:21_cur_rx_rate',
+    'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
+  })
+# ---
+# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.fritz_repeater_download_speed-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'device_class': 'data_rate',
+      'friendly_name': 'fritz-repeater Download speed',
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_repeater_download_speed',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '144.4',
+  })
+# ---
+# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.fritz_repeater_upload_speed-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.fritz_repeater_upload_speed',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Upload speed',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.DATA_RATE: 'data_rate'>,
+    'original_icon': None,
+    'original_name': 'Upload speed',
+    'platform': 'fritz',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': 'device_cur_tx_rate',
+    'unique_id': '1C:ED:6F:12:34:21_cur_tx_rate',
+    'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
+  })
+# ---
+# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.fritz_repeater_upload_speed-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'device_class': 'data_rate',
+      'friendly_name': 'fritz-repeater Upload speed',
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_repeater_upload_speed',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '130.0',
+  })
+# ---
+# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.mock_title_connected_devices-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': None,
+    'entity_id': 'sensor.mock_title_connected_devices',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Connected devices',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': None,
+    'original_name': 'Connected devices',
+    'platform': 'fritz',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': 'mesh_connected_devices',
+    'unique_id': '1c:ed:6f:12:34:11_mesh_connected_devices',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.mock_title_connected_devices-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'friendly_name': 'Mock Title Connected devices',
+      'fritz_host': 'fake_host',
+      'fritz_unique_id': '1CED6F123411',
+      'is_master': True,
+      'node_mac': '1c:ed:6f:12:34:11',
+      'node_name': 'fritz.box',
+      'rx_rate_kbps': 144400,
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'tx_rate_kbps': 130000,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.mock_title_connected_devices',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '2',
   })
 # ---
 # name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.mock_title_connection_uptime-entry]
@@ -3574,7 +2970,7 @@
     'state': '2024-09-01T10:11:33+00:00',
   })
 # ---
-# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.mock_title_data_rate-entry]
+# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.mock_title_download_speed-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -3590,7 +2986,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
-    'entity_id': 'sensor.mock_title_data_rate',
+    'entity_id': 'sensor.mock_title_download_speed',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -3598,7 +2994,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Data rate',
+    'object_id_base': 'Download speed',
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 2,
@@ -3606,7 +3002,7 @@
     }),
     'original_device_class': <SensorDeviceClass.DATA_RATE: 'data_rate'>,
     'original_icon': None,
-    'original_name': 'Data rate',
+    'original_name': 'Download speed',
     'platform': 'fritz',
     'previous_unique_id': None,
     'suggested_object_id': None,
@@ -3616,78 +3012,20 @@
     'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
   })
 # ---
-# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.mock_title_data_rate-state]
+# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.mock_title_download_speed-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       'device_class': 'data_rate',
-      'friendly_name': 'Mock Title Data rate',
+      'friendly_name': 'Mock Title Download speed',
       'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
       'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.mock_title_data_rate',
+    'entity_id': 'sensor.mock_title_download_speed',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
-    'state': '0.0',
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.mock_title_data_rate_2-entry]
-  EntityRegistryEntrySnapshot({
-    'aliases': list([
-      None,
-    ]),
-    'area_id': None,
-    'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
-    'config_entry_id': <ANY>,
-    'config_subentry_id': <ANY>,
-    'device_class': None,
-    'device_id': <ANY>,
-    'disabled_by': None,
-    'domain': 'sensor',
-    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
-    'entity_id': 'sensor.mock_title_data_rate_2',
-    'has_entity_name': True,
-    'hidden_by': None,
-    'icon': None,
-    'id': <ANY>,
-    'labels': set({
-    }),
-    'name': None,
-    'object_id_base': 'Data rate',
-    'options': dict({
-      'sensor': dict({
-        'suggested_display_precision': 2,
-      }),
-    }),
-    'original_device_class': <SensorDeviceClass.DATA_RATE: 'data_rate'>,
-    'original_icon': None,
-    'original_name': 'Data rate',
-    'platform': 'fritz',
-    'previous_unique_id': None,
-    'suggested_object_id': None,
-    'supported_features': 0,
-    'translation_key': 'mesh_tx_rate',
-    'unique_id': '1c:ed:6f:12:34:11_mesh_tx_rate',
-    'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
-  })
-# ---
-# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.mock_title_data_rate_2-state]
-  StateSnapshot({
-    'attributes': ReadOnlyDict({
-      'device_class': 'data_rate',
-      'friendly_name': 'Mock Title Data rate',
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-      'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
-    }),
-    'context': <ANY>,
-    'entity_id': 'sensor.mock_title_data_rate_2',
-    'last_changed': <ANY>,
-    'last_reported': <ANY>,
-    'last_updated': <ANY>,
-    'state': '0.0',
+    'state': '144.4',
   })
 # ---
 # name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.mock_title_download_throughput-entry]
@@ -3962,6 +3300,59 @@
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '1.7',
+  })
+# ---
+# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.mock_title_lan_devices-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.mock_title_lan_devices',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'LAN devices',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': None,
+    'original_name': 'LAN devices',
+    'platform': 'fritz',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': 'mesh_lan_devices',
+    'unique_id': '1c:ed:6f:12:34:11_mesh_lan_devices',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.mock_title_lan_devices-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'friendly_name': 'Mock Title LAN devices',
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.mock_title_lan_devices',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '1',
   })
 # ---
 # name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.mock_title_link_download_noise_margin-entry]
@@ -4388,7 +3779,7 @@
     'state': '2105.0',
   })
 # ---
-# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.mock_title_upload_throughput-entry]
+# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.mock_title_upload_speed-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -4403,8 +3794,8 @@
     'device_id': <ANY>,
     'disabled_by': None,
     'domain': 'sensor',
-    'entity_category': None,
-    'entity_id': 'sensor.mock_title_upload_throughput',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.mock_title_upload_speed',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -4412,38 +3803,38 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Upload throughput',
+    'object_id_base': 'Upload speed',
     'options': dict({
       'sensor': dict({
-        'suggested_display_precision': 0,
+        'suggested_display_precision': 2,
       }),
     }),
     'original_device_class': <SensorDeviceClass.DATA_RATE: 'data_rate'>,
     'original_icon': None,
-    'original_name': 'Upload throughput',
+    'original_name': 'Upload speed',
     'platform': 'fritz',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': 'kb_s_sent',
-    'unique_id': '1CED6F123411-kb_s_sent',
-    'unit_of_measurement': <UnitOfDataRate.KILOBYTES_PER_SECOND: 'kB/s'>,
+    'translation_key': 'mesh_tx_rate',
+    'unique_id': '1c:ed:6f:12:34:11_mesh_tx_rate',
+    'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
   })
 # ---
-# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.mock_title_upload_throughput-state]
+# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.mock_title_upload_speed-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       'device_class': 'data_rate',
-      'friendly_name': 'Mock Title Upload throughput',
+      'friendly_name': 'Mock Title Upload speed',
       'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-      'unit_of_measurement': <UnitOfDataRate.KILOBYTES_PER_SECOND: 'kB/s'>,
+      'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.mock_title_upload_throughput',
+    'entity_id': 'sensor.mock_title_upload_speed',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
-    'state': '3.4',
+    'state': '130.0',
   })
 # ---
 # name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.mock_title_uptime-entry]
@@ -4554,9 +3945,7 @@
       None,
     ]),
     'area_id': None,
-    'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
+    'capabilities': None,
     'config_entry_id': <ANY>,
     'config_subentry_id': <ANY>,
     'device_class': None,
@@ -4846,8 +4235,11 @@
     'name': None,
     'object_id_base': 'Link download noise margin',
     'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
     }),
-    'original_device_class': None,
+    'original_device_class': <SensorDeviceClass.DATA_RATE: 'data_rate'>,
     'original_icon': None,
     'original_name': 'Link download noise margin',
     'platform': 'fritz',
@@ -5464,7 +4856,7 @@
     'state': '42',
   })
 # ---
-# name: test_sensor_setup[sensor.mock_title_data_rate-entry]
+# name: test_sensor_setup[sensor.mock_title_download_speed-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -5480,7 +4872,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
-    'entity_id': 'sensor.mock_title_data_rate',
+    'entity_id': 'sensor.mock_title_download_speed',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -5488,7 +4880,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Data rate',
+    'object_id_base': 'Download speed',
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 2,
@@ -5496,7 +4888,7 @@
     }),
     'original_device_class': <SensorDeviceClass.DATA_RATE: 'data_rate'>,
     'original_icon': None,
-    'original_name': 'Data rate',
+    'original_name': 'Download speed',
     'platform': 'fritz',
     'previous_unique_id': None,
     'suggested_object_id': None,
@@ -5506,78 +4898,20 @@
     'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
   })
 # ---
-# name: test_sensor_setup[sensor.mock_title_data_rate-state]
+# name: test_sensor_setup[sensor.mock_title_download_speed-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       'device_class': 'data_rate',
-      'friendly_name': 'Mock Title Data rate',
+      'friendly_name': 'Mock Title Download speed',
       'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
       'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.mock_title_data_rate',
+    'entity_id': 'sensor.mock_title_download_speed',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
-    'state': '0.0',
-  })
-# ---
-# name: test_sensor_setup[sensor.mock_title_data_rate_2-entry]
-  EntityRegistryEntrySnapshot({
-    'aliases': list([
-      None,
-    ]),
-    'area_id': None,
-    'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
-    'config_entry_id': <ANY>,
-    'config_subentry_id': <ANY>,
-    'device_class': None,
-    'device_id': <ANY>,
-    'disabled_by': None,
-    'domain': 'sensor',
-    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
-    'entity_id': 'sensor.mock_title_data_rate_2',
-    'has_entity_name': True,
-    'hidden_by': None,
-    'icon': None,
-    'id': <ANY>,
-    'labels': set({
-    }),
-    'name': None,
-    'object_id_base': 'Data rate',
-    'options': dict({
-      'sensor': dict({
-        'suggested_display_precision': 2,
-      }),
-    }),
-    'original_device_class': <SensorDeviceClass.DATA_RATE: 'data_rate'>,
-    'original_icon': None,
-    'original_name': 'Data rate',
-    'platform': 'fritz',
-    'previous_unique_id': None,
-    'suggested_object_id': None,
-    'supported_features': 0,
-    'translation_key': 'mesh_tx_rate',
-    'unique_id': '1c:ed:6f:12:34:11_mesh_tx_rate',
-    'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
-  })
-# ---
-# name: test_sensor_setup[sensor.mock_title_data_rate_2-state]
-  StateSnapshot({
-    'attributes': ReadOnlyDict({
-      'device_class': 'data_rate',
-      'friendly_name': 'Mock Title Data rate',
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-      'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
-    }),
-    'context': <ANY>,
-    'entity_id': 'sensor.mock_title_data_rate_2',
-    'last_changed': <ANY>,
-    'last_reported': <ANY>,
-    'last_updated': <ANY>,
-    'state': '0.0',
+    'state': '144.4',
   })
 # ---
 # name: test_sensor_setup[sensor.mock_title_download_throughput-entry]
@@ -5852,6 +5186,59 @@
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '1.7',
+  })
+# ---
+# name: test_sensor_setup[sensor.mock_title_lan_devices-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.mock_title_lan_devices',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'LAN devices',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': None,
+    'original_name': 'LAN devices',
+    'platform': 'fritz',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': 'mesh_lan_devices',
+    'unique_id': '1c:ed:6f:12:34:11_mesh_lan_devices',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_sensor_setup[sensor.mock_title_lan_devices-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'friendly_name': 'Mock Title LAN devices',
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.mock_title_lan_devices',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '1',
   })
 # ---
 # name: test_sensor_setup[sensor.mock_title_link_download_noise_margin-entry]
@@ -6278,6 +5665,64 @@
     'state': '2105.0',
   })
 # ---
+# name: test_sensor_setup[sensor.mock_title_upload_speed-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.mock_title_upload_speed',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Upload speed',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.DATA_RATE: 'data_rate'>,
+    'original_icon': None,
+    'original_name': 'Upload speed',
+    'platform': 'fritz',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': 'mesh_tx_rate',
+    'unique_id': '1c:ed:6f:12:34:11_mesh_tx_rate',
+    'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
+  })
+# ---
+# name: test_sensor_setup[sensor.mock_title_upload_speed-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'device_class': 'data_rate',
+      'friendly_name': 'Mock Title Upload speed',
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.mock_title_upload_speed',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '130.0',
+  })
+# ---
 # name: test_sensor_setup[sensor.mock_title_upload_throughput-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
@@ -6387,7 +5832,7 @@
     'state': '2024-08-03T16:30:21+00:00',
   })
 # ---
-# name: test_sensor_setup[sensor.printer_data_rate-entry]
+# name: test_sensor_setup[sensor.mock_title_wi_fi_devices-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -6403,7 +5848,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
-    'entity_id': 'sensor.printer_data_rate',
+    'entity_id': 'sensor.mock_title_wi_fi_devices',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -6411,7 +5856,60 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Data rate',
+    'object_id_base': 'Wi-Fi devices',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': None,
+    'original_name': 'Wi-Fi devices',
+    'platform': 'fritz',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': 'mesh_wifi_devices',
+    'unique_id': '1c:ed:6f:12:34:11_mesh_wifi_devices',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_sensor_setup[sensor.mock_title_wi_fi_devices-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'friendly_name': 'Mock Title Wi-Fi devices',
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.mock_title_wi_fi_devices',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '1',
+  })
+# ---
+# name: test_sensor_setup[sensor.printer_download_speed-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.printer_download_speed',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Download speed',
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 2,
@@ -6419,7 +5917,7 @@
     }),
     'original_device_class': <SensorDeviceClass.DATA_RATE: 'data_rate'>,
     'original_icon': None,
-    'original_name': 'Data rate',
+    'original_name': 'Download speed',
     'platform': 'fritz',
     'previous_unique_id': None,
     'suggested_object_id': None,
@@ -6429,23 +5927,23 @@
     'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
   })
 # ---
-# name: test_sensor_setup[sensor.printer_data_rate-state]
+# name: test_sensor_setup[sensor.printer_download_speed-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       'device_class': 'data_rate',
-      'friendly_name': 'printer Data rate',
+      'friendly_name': 'printer Download speed',
       'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
       'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.printer_data_rate',
+    'entity_id': 'sensor.printer_download_speed',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '0.0',
   })
 # ---
-# name: test_sensor_setup[sensor.printer_data_rate_2-entry]
+# name: test_sensor_setup[sensor.printer_upload_speed-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -6461,7 +5959,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
-    'entity_id': 'sensor.printer_data_rate_2',
+    'entity_id': 'sensor.printer_upload_speed',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -6469,7 +5967,7 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Data rate',
+    'object_id_base': 'Upload speed',
     'options': dict({
       'sensor': dict({
         'suggested_display_precision': 2,
@@ -6477,7 +5975,7 @@
     }),
     'original_device_class': <SensorDeviceClass.DATA_RATE: 'data_rate'>,
     'original_icon': None,
-    'original_name': 'Data rate',
+    'original_name': 'Upload speed',
     'platform': 'fritz',
     'previous_unique_id': None,
     'suggested_object_id': None,
@@ -6487,16 +5985,16 @@
     'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
   })
 # ---
-# name: test_sensor_setup[sensor.printer_data_rate_2-state]
+# name: test_sensor_setup[sensor.printer_upload_speed-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       'device_class': 'data_rate',
-      'friendly_name': 'printer Data rate',
+      'friendly_name': 'printer Upload speed',
       'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
       'unit_of_measurement': <UnitOfDataRate.MEGABITS_PER_SECOND: 'Mbit/s'>,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.printer_data_rate_2',
+    'entity_id': 'sensor.printer_upload_speed',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,

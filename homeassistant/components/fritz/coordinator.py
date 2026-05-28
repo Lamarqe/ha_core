@@ -613,6 +613,111 @@ class FritzBoxTools(DataUpdateCoordinator[UpdateCoordinatorDataType]):
         if new_nodes:
             async_dispatcher_send(self.hass, self.signal_mesh_node_new)
 
+    def _scan_mesh_topology(
+        self,
+        topology: dict[str, Any],
+        hosts: dict[str, Device],
+        consider_home: float,
+    ) -> bool:
+        """Process mesh topology and update device info. Returns True if a new device was found."""
+        mesh_intf: dict[str, Interface] = {}
+        uplink_by_child_intf: dict[str, tuple[str, dict[str, Any]]] = {}
+        new_mesh_nodes: dict[str, str] = {}
+
+        for node in topology.get("nodes", []):
+            if not node["is_meshed"]:
+                continue
+
+            node_name = node["device_name"]
+            for interf in node["node_interfaces"]:
+                int_mac = interf["mac_address"]
+                mesh_intf[interf["uid"]] = Interface(
+                    device=node_name,
+                    mac=int_mac,
+                    op_mode=interf.get("op_mode", ""),
+                    ssid=interf.get("ssid", ""),
+                    type=interf["type"],
+                )
+
+                if interf["type"].lower() == "wlan" and interf[
+                    "name"
+                ].lower().startswith("uplink"):
+                    self.mesh_wifi_uplink = True
+
+                for link in interf["node_links"]:
+                    if link.get("state") == "CONNECTED":
+                        uplink_by_child_intf[link["node_interface_2_uid"]] = (
+                            link["node_interface_1_uid"],
+                            link,
+                        )
+
+                formatted_mac = dr.format_mac(int_mac)
+                if formatted_mac == self.mac:
+                    self.mesh_role = MeshRoles(node["mesh_role"])
+                    new_mesh_nodes[node_name] = self.mac
+                elif node_name not in new_mesh_nodes:
+                    new_mesh_nodes[node_name] = formatted_mac
+
+        self._update_mesh_nodes(new_mesh_nodes)
+
+        new_device = False
+
+        for node in topology.get("nodes", []):
+            if not node["is_meshed"] or node["mesh_role"] == "master":
+                continue
+
+            node_mac_raw = node["device_mac_address"]
+            if node_mac_raw not in hosts:
+                continue
+
+            dev_info = hosts[node_mac_raw]
+            for interf in node["node_interfaces"]:
+                if interf["uid"] not in uplink_by_child_intf:
+                    continue
+                parent_intf_uid, link = uplink_by_child_intf[interf["uid"]]
+                parent_intf = mesh_intf.get(parent_intf_uid)
+                if parent_intf is not None:
+                    dev_info.connected_to = parent_intf["device"]
+                    dev_info.connection_type = parent_intf["type"]
+                    dev_info.cur_rx_rate = link.get("cur_data_rate_rx")
+                    dev_info.cur_tx_rate = link.get("cur_data_rate_tx")
+                    break
+
+            if self.manage_device_info(dev_info, node_mac_raw, consider_home):
+                new_device = True
+
+        for node in topology.get("nodes", []):
+            if node["is_meshed"]:
+                continue
+
+            for interf in node["node_interfaces"]:
+                dev_mac = interf["mac_address"]
+
+                if dev_mac not in hosts:
+                    continue
+
+                dev_info = hosts[dev_mac]
+
+                for link in interf["node_links"]:
+                    if link.get("state") != "CONNECTED":
+                        continue  # ignore orphan node links
+
+                    intf = mesh_intf.get(link["node_interface_1_uid"])
+                    if intf is not None:
+                        if intf["op_mode"] == "AP_GUEST":
+                            dev_info.wan_access = None
+
+                        dev_info.connected_to = intf["device"]
+                        dev_info.connection_type = intf["type"]
+                        dev_info.ssid = intf.get("ssid")
+                        dev_info.cur_rx_rate = link.get("cur_data_rate_rx")
+                        dev_info.cur_tx_rate = link.get("cur_data_rate_tx")
+
+                if self.manage_device_info(dev_info, dev_mac, consider_home):
+                    new_device = True
+
+        return new_device
+
     async def async_scan_devices(self, now: datetime | None = None) -> None:
         """Scan for new network devices."""
 
@@ -659,69 +764,7 @@ class FritzBoxTools(DataUpdateCoordinator[UpdateCoordinatorDataType]):
             # Avoid duplicating device trackers
             return
 
-        mesh_intf = {}
-        new_mesh_nodes: dict[str, str] = {}
-        # first get all meshed devices
-        for node in topology.get("nodes", []):
-            if not node["is_meshed"]:
-                continue
-
-            node_name = node["device_name"]
-            for interf in node["node_interfaces"]:
-                int_mac = interf["mac_address"]
-                mesh_intf[interf["uid"]] = Interface(
-                    device=node_name,
-                    mac=int_mac,
-                    op_mode=interf.get("op_mode", ""),
-                    ssid=interf.get("ssid", ""),
-                    type=interf["type"],
-                )
-
-                if interf["type"].lower() == "wlan" and interf[
-                    "name"
-                ].lower().startswith("uplink"):
-                    self.mesh_wifi_uplink = True
-
-                formatted_mac = dr.format_mac(int_mac)
-                if formatted_mac == self.mac:
-                    self.mesh_role = MeshRoles(node["mesh_role"])
-                    new_mesh_nodes[node_name] = self.mac
-                elif node_name not in new_mesh_nodes:
-                    new_mesh_nodes[node_name] = formatted_mac
-
-        self._update_mesh_nodes(new_mesh_nodes)
-
-        # second get all client devices
-        for node in topology.get("nodes", []):
-            if node["is_meshed"]:
-                continue
-
-            for interf in node["node_interfaces"]:
-                dev_mac = interf["mac_address"]
-
-                if dev_mac not in hosts:
-                    continue
-
-                dev_info: Device = hosts[dev_mac]
-
-                for link in interf["node_links"]:
-                    if link.get("state") != "CONNECTED":
-                        continue  # ignore orphan node links
-
-                    intf = mesh_intf.get(link["node_interface_1_uid"])
-                    if intf is not None:
-                        if intf["op_mode"] == "AP_GUEST":
-                            dev_info.wan_access = None
-
-                        dev_info.connected_to = intf["device"]
-                        dev_info.connection_type = intf["type"]
-                        dev_info.ssid = intf.get("ssid")
-                        dev_info.cur_rx_rate = link.get("cur_data_rate_rx")
-                        dev_info.cur_tx_rate = link.get("cur_data_rate_tx")
-
-                if self.manage_device_info(dev_info, dev_mac, consider_home):
-                    new_device = True
-
+        new_device = self._scan_mesh_topology(topology, hosts, consider_home)
         await self.async_send_signal_device_update(new_device)
 
     async def async_trigger_firmware_update(self) -> bool:

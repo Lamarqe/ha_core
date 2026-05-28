@@ -5,6 +5,13 @@
       'client_devices': list([
         dict({
           'connected_to': 'fritz.box',
+          'connection_type': 'WLAN',
+          'hostname': 'fritz-repeater',
+          'is_connected': True,
+          'wan_access': True,
+        }),
+        dict({
+          'connected_to': 'fritz.box',
           'connection_type': 'LAN',
           'hostname': 'printer',
           'is_connected': True,
