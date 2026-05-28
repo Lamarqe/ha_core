@@ -237,7 +237,7 @@ async def test_cleanup_button(
         if entity.unique_id.startswith("AA:BB:CC:00:11:22")
     ]
     assert entities
-    assert len(entities) == 5
+    assert len(entities) == 3
 
     # removed tracked device and trigger cleanup
     host_attributes = deepcopy(MOCK_HOST_ATTRIBUTES_DATA)

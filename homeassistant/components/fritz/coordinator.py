@@ -72,7 +72,6 @@ class FritzData:
     profile_switches: dict[str, set[str]] = field(default_factory=dict)
     wol_buttons: dict[str, set[str]] = field(default_factory=dict)
     mesh_node_sensors: dict[str, set[str]] = field(default_factory=dict)
-    device_speed_sensors: dict[str, set[str]] = field(default_factory=dict)
 
 
 class ClassSetupMissing(Exception):
