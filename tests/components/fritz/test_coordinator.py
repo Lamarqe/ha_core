@@ -29,6 +29,7 @@ from homeassistant.components.fritz.coordinator import (
     FritzConnectionCached,
     FritzData,
 )
+from homeassistant.components.fritz.models import Device
 from homeassistant.config_entries import ConfigEntryState
 from homeassistant.const import (
     CONF_HOST,
@@ -476,6 +477,274 @@ async def test_async_scan_devices_mesh_guest_and_missing_host(
 
     dev_info = manage.call_args.args[0]
     assert dev_info.wan_access is None
+
+
+async def test_async_scan_devices_client_connected_to_slave_ap(
+    fritz_tools,
+) -> None:
+    """Test non-meshed client gets connected_to and connection_type from slave AP interface."""
+
+    hosts = {"AA:BB:CC:DD:EE:04": MagicMock(wan_access=True)}
+    topology = {
+        "nodes": [
+            {
+                "is_meshed": True,
+                "mesh_role": "master",
+                "device_name": "fritz.box",
+                "device_mac_address": "1CED6F123411",
+                "node_interfaces": [
+                    {
+                        "uid": "master-intf",
+                        "mac_address": fritz_tools.unique_id,
+                        "op_mode": "",
+                        "ssid": None,
+                        "type": "LAN",
+                        "name": "LAN:1",
+                        "node_links": [],
+                    }
+                ],
+            },
+            {
+                "is_meshed": True,
+                "mesh_role": "slave",
+                "device_name": "slave-ap",
+                "device_mac_address": "AA:BB:CC:DD:EE:02",
+                "node_interfaces": [
+                    {
+                        "uid": "slave-ap-2g",
+                        "mac_address": "AA:BB:CC:DD:EE:02",
+                        "op_mode": "AP",
+                        "ssid": "TestSSID",
+                        "type": "WLAN",
+                        "name": "AP:2G:0",
+                        "node_links": [],
+                    }
+                ],
+            },
+            {
+                "is_meshed": False,
+                "node_interfaces": [
+                    {
+                        "mac_address": "AA:BB:CC:DD:EE:04",
+                        "node_links": [
+                            {
+                                "state": "CONNECTED",
+                                "node_interface_1_uid": "slave-ap-2g",
+                                "node_interface_2_uid": "client-intf",
+                                "cur_data_rate_rx": 72000,
+                                "cur_data_rate_tx": 36000,
+                            }
+                        ],
+                    }
+                ],
+            },
+        ]
+    }
+
+    with (
+        patch.object(
+            fritz_tools, "_async_update_hosts_info", AsyncMock(return_value=hosts)
+        ),
+        patch.object(
+            fritz_tools.fritz_hosts,
+            "get_mesh_topology",
+            MagicMock(return_value=topology),
+        ),
+        patch.object(fritz_tools, "manage_device_info", return_value=False) as manage,
+        patch.object(fritz_tools, "async_send_signal_device_update", AsyncMock()),
+    ):
+        await fritz_tools.async_scan_devices()
+
+    dev_info = manage.call_args.args[0]
+    assert dev_info.connected_to == "slave-ap"
+    assert dev_info.connection_type == "WLAN"
+    assert dev_info.cur_rx_rate == 72000
+
+
+async def test_async_scan_devices_lan_backhaul_slave_no_connected_to(
+    fritz_tools,
+) -> None:
+    """Test LAN-backhaul slave leaves connected_to unset.
+
+    For LAN backhaul, the uplink link has ni1=slave_lan_intf and ni2=switch_port.
+    uplink_by_child_intf is keyed by ni2 (switch_port), not by any of the slave's
+    own interface UIDs, so the second topology pass never finds a matching entry.
+    """
+
+    slave_dev = Device(
+        connected=True,
+        connected_to="",
+        connection_type="",
+        ip_address="192.168.1.5",
+        name="slave-ap",
+        ssid=None,
+    )
+    hosts = {"AA:BB:CC:DD:EE:01": slave_dev}
+    topology = {
+        "nodes": [
+            {
+                "is_meshed": True,
+                "mesh_role": "master",
+                "device_name": "fritz.box",
+                "device_mac_address": "1CED6F123411",
+                "node_interfaces": [
+                    {
+                        "uid": "master-intf",
+                        "mac_address": fritz_tools.unique_id,
+                        "op_mode": "",
+                        "ssid": None,
+                        "type": "LAN",
+                        "name": "LAN:1",
+                        "node_links": [],
+                    }
+                ],
+            },
+            {
+                "is_meshed": True,
+                "mesh_role": "slave",
+                "device_name": "slave-ap",
+                "device_mac_address": "AA:BB:CC:DD:EE:01",
+                "node_interfaces": [
+                    {
+                        "uid": "slave-lan-intf",
+                        "mac_address": "AA:BB:CC:DD:EE:01",
+                        "op_mode": "",
+                        "ssid": None,
+                        "type": "LAN",
+                        "name": "LAN:1",
+                        "node_links": [
+                            {
+                                "state": "CONNECTED",
+                                "node_interface_1_uid": "slave-lan-intf",
+                                "node_interface_2_uid": "switch-port",
+                                "cur_data_rate_rx": 1000000,
+                                "cur_data_rate_tx": 1000000,
+                            }
+                        ],
+                    },
+                    {
+                        "uid": "slave-ap-2g",
+                        "mac_address": "AA:BB:CC:DD:EE:02",
+                        "op_mode": "AP",
+                        "ssid": "TestSSID",
+                        "type": "WLAN",
+                        "name": "AP:2G:0",
+                        "node_links": [],
+                    },
+                ],
+            },
+        ]
+    }
+
+    with (
+        patch.object(
+            fritz_tools, "_async_update_hosts_info", AsyncMock(return_value=hosts)
+        ),
+        patch.object(
+            fritz_tools.fritz_hosts,
+            "get_mesh_topology",
+            MagicMock(return_value=topology),
+        ),
+        patch.object(fritz_tools, "manage_device_info", return_value=False),
+        patch.object(fritz_tools, "async_send_signal_device_update", AsyncMock()),
+    ):
+        await fritz_tools.async_scan_devices()
+
+    assert slave_dev.connected_to == ""
+
+
+async def test_async_scan_devices_multiple_slaves_registered(
+    hass: HomeAssistant,
+    fritz_tools,
+) -> None:
+    """Test two new mesh slaves are both registered and signal fires exactly once."""
+
+    topology = {
+        "nodes": [
+            {
+                "is_meshed": True,
+                "mesh_role": "master",
+                "device_name": "fritz.box",
+                "device_mac_address": "1CED6F123411",
+                "node_interfaces": [
+                    {
+                        "uid": "master-intf",
+                        "mac_address": fritz_tools.unique_id,
+                        "op_mode": "",
+                        "ssid": None,
+                        "type": "LAN",
+                        "name": "LAN:1",
+                        "node_links": [],
+                    }
+                ],
+            },
+            {
+                "is_meshed": True,
+                "mesh_role": "slave",
+                "device_name": "slave-ap-1",
+                "device_mac_address": "AA:BB:CC:DD:EE:01",
+                "node_interfaces": [
+                    {
+                        "uid": "slave-1-lan",
+                        "mac_address": "AA:BB:CC:DD:EE:01",
+                        "op_mode": "",
+                        "ssid": None,
+                        "type": "LAN",
+                        "name": "LAN:1",
+                        "node_links": [],
+                    }
+                ],
+            },
+            {
+                "is_meshed": True,
+                "mesh_role": "slave",
+                "device_name": "slave-ap-2",
+                "device_mac_address": "AA:BB:CC:DD:EE:11",
+                "node_interfaces": [
+                    {
+                        "uid": "slave-2-lan",
+                        "mac_address": "AA:BB:CC:DD:EE:11",
+                        "op_mode": "",
+                        "ssid": None,
+                        "type": "LAN",
+                        "name": "LAN:1",
+                        "node_links": [],
+                    }
+                ],
+            },
+        ]
+    }
+
+    with (
+        patch.object(
+            fritz_tools, "_async_update_hosts_info", AsyncMock(return_value={})
+        ),
+        patch.object(
+            fritz_tools.fritz_hosts,
+            "get_mesh_topology",
+            MagicMock(return_value=topology),
+        ),
+        patch.object(fritz_tools, "async_send_signal_device_update", AsyncMock()),
+        patch(
+            "homeassistant.components.fritz.coordinator.async_dispatcher_send"
+        ) as dispatch_mock,
+    ):
+        await fritz_tools.async_scan_devices()
+
+    device_registry = dr.async_get(hass)
+    assert (
+        device_registry.async_get_device(
+            connections={(dr.CONNECTION_NETWORK_MAC, "aa:bb:cc:dd:ee:01")}
+        )
+        is not None
+    )
+    assert (
+        device_registry.async_get_device(
+            connections={(dr.CONNECTION_NETWORK_MAC, "aa:bb:cc:dd:ee:11")}
+        )
+        is not None
+    )
+    dispatch_mock.assert_called_once_with(hass, fritz_tools.signal_mesh_node_new)
 
 
 async def test_trigger_methods(
