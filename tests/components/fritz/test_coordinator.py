@@ -564,11 +564,12 @@ async def test_async_scan_devices_client_connected_to_slave_ap(
 async def test_async_scan_devices_lan_backhaul_slave_no_connected_to(
     fritz_tools,
 ) -> None:
-    """Test LAN-backhaul slave leaves connected_to unset.
+    """Test LAN-backhaul slave leaves connected_to unset when no switch node is present.
 
-    For LAN backhaul, the uplink link has ni1=slave_lan_intf and ni2=switch_port.
-    uplink_by_child_intf is keyed by ni2 (switch_port), not by any of the slave's
-    own interface UIDs, so the second topology pass never finds a matching entry.
+    When a switch node with device_model='Switch' is present in the topology its
+    interfaces are added to mesh_intf, allowing the fallback scan to resolve the
+    slave's uplink.  This test covers the degenerate case where the topology
+    contains only the raw switch-port link without a recognised switch node.
     """
 
     slave_dev = Device(
@@ -745,6 +746,213 @@ async def test_async_scan_devices_multiple_slaves_registered(
         is not None
     )
     dispatch_mock.assert_called_once_with(hass, fritz_tools.signal_mesh_node_new)
+
+
+async def test_async_scan_devices_client_connected_to_switch(
+    fritz_tools,
+) -> None:
+    """Test non-meshed client behind a LAN switch gets connected_to set to the switch name."""
+
+    hosts = {"AA:BB:CC:DD:EE:04": MagicMock(wan_access=True)}
+    topology = {
+        "nodes": [
+            {
+                "is_meshed": True,
+                "mesh_role": "master",
+                "device_name": "fritz.box",
+                "device_mac_address": "1CED6F123411",
+                "node_interfaces": [
+                    {
+                        "uid": "master-lan1",
+                        "mac_address": fritz_tools.unique_id,
+                        "op_mode": "",
+                        "ssid": None,
+                        "type": "LAN",
+                        "name": "LAN:1",
+                        "node_links": [
+                            {
+                                "state": "CONNECTED",
+                                "node_interface_1_uid": "master-lan1",
+                                "node_interface_2_uid": "switch-uplink",
+                                "cur_data_rate_rx": 1000000,
+                                "cur_data_rate_tx": 1000000,
+                            }
+                        ],
+                    }
+                ],
+            },
+            {
+                "is_meshed": False,
+                "device_model": "Switch",
+                "device_name": "Switch",
+                "node_interfaces": [
+                    {
+                        "uid": "switch-uplink",
+                        "mac_address": "FA:CE:00:14:D3:FA",
+                        "op_mode": "",
+                        "ssid": None,
+                        "type": "LAN",
+                        "name": "",
+                        "node_links": [
+                            {
+                                "state": "CONNECTED",
+                                "node_interface_1_uid": "switch-port1",
+                                "node_interface_2_uid": "client-intf",
+                                "cur_data_rate_rx": 100000,
+                                "cur_data_rate_tx": 100000,
+                            }
+                        ],
+                    },
+                    {
+                        "uid": "switch-port1",
+                        "mac_address": "FA:CE:00:14:D3:FB",
+                        "op_mode": "",
+                        "ssid": None,
+                        "type": "LAN",
+                        "name": "",
+                        "node_links": [],
+                    },
+                ],
+            },
+            {
+                "is_meshed": False,
+                "node_interfaces": [
+                    {
+                        "mac_address": "AA:BB:CC:DD:EE:04",
+                        "node_links": [
+                            {
+                                # Real Fritz!Box direction: client as node_1, switch as node_2.
+                                # ni1 = client's own interface (not in mesh_intf),
+                                # ni2 = switch port (in mesh_intf).
+                                "state": "CONNECTED",
+                                "node_interface_1_uid": "client-intf",
+                                "node_interface_2_uid": "switch-port1",
+                                "cur_data_rate_rx": 100000,
+                                "cur_data_rate_tx": 100000,
+                            }
+                        ],
+                    }
+                ],
+            },
+        ]
+    }
+
+    with (
+        patch.object(
+            fritz_tools, "_async_update_hosts_info", AsyncMock(return_value=hosts)
+        ),
+        patch.object(
+            fritz_tools.fritz_hosts,
+            "get_mesh_topology",
+            MagicMock(return_value=topology),
+        ),
+        patch.object(fritz_tools, "manage_device_info", return_value=False) as manage,
+        patch.object(fritz_tools, "async_send_signal_device_update", AsyncMock()),
+    ):
+        await fritz_tools.async_scan_devices()
+
+    # manage_device_info must be called exactly once — for the real client,
+    # not for any of the switch's synthetic port MACs.
+    assert manage.call_count == 1
+    dev_info = manage.call_args.args[0]
+    assert dev_info.connected_to == "Switch"
+    assert dev_info.connection_type == "LAN"
+    assert dev_info.cur_rx_rate == 100000
+
+
+async def test_async_scan_devices_switch_node_registered(
+    hass: HomeAssistant,
+    fritz_tools,
+) -> None:
+    """Test LAN switch is registered using device_mac_address regardless of hosts or interface order."""
+
+    topology = {
+        "nodes": [
+            {
+                "is_meshed": True,
+                "mesh_role": "master",
+                "device_name": "fritz.box",
+                "device_mac_address": "1CED6F123411",
+                "node_interfaces": [
+                    {
+                        "uid": "master-lan1",
+                        "mac_address": fritz_tools.unique_id,
+                        "op_mode": "",
+                        "ssid": None,
+                        "type": "LAN",
+                        "name": "LAN:1",
+                        "node_links": [],
+                    }
+                ],
+            },
+            {
+                "is_meshed": False,
+                "device_model": "Switch",
+                "device_name": "Switch",
+                # device_mac_address is the stable canonical identifier — it must
+                # be used regardless of interface ordering or hosts Active state.
+                "device_mac_address": "AA:BB:CC:DD:EE:01",
+                "node_interfaces": [
+                    {
+                        "uid": "switch-port0",
+                        "mac_address": "FA:CE:00:14:D3:FA",
+                        "op_mode": "",
+                        "ssid": None,
+                        "type": "LAN",
+                        "name": "",
+                        "node_links": [],
+                    },
+                    {
+                        "uid": "switch-port1",
+                        "mac_address": "FA:CE:00:14:D3:FB",
+                        "op_mode": "",
+                        "ssid": None,
+                        "type": "LAN",
+                        "name": "",
+                        "node_links": [],
+                    },
+                ],
+            },
+        ]
+    }
+    # Hosts has an active entry for switch-port1 (FB), NOT device_mac_address.
+    # The registered MAC must still be device_mac_address (AA:BB:CC:DD:EE:01).
+    hosts = {
+        "FA:CE:00:14:D3:FB": Device(
+            connected=True,
+            connected_to="",
+            connection_type="",
+            ip_address="",
+            name="Switch",
+            ssid=None,
+        ),
+    }
+
+    with (
+        patch.object(
+            fritz_tools, "_async_update_hosts_info", AsyncMock(return_value=hosts)
+        ),
+        patch.object(
+            fritz_tools.fritz_hosts,
+            "get_mesh_topology",
+            MagicMock(return_value=topology),
+        ),
+        patch.object(fritz_tools, "async_send_signal_device_update", AsyncMock()),
+        patch(
+            "homeassistant.components.fritz.coordinator.async_dispatcher_send"
+        ) as dispatch_mock,
+    ):
+        await fritz_tools.async_scan_devices()
+
+    device_registry = dr.async_get(hass)
+    assert (
+        device_registry.async_get_device(
+            connections={(dr.CONNECTION_NETWORK_MAC, "aa:bb:cc:dd:ee:01")}
+        )
+        is not None
+    )
+    assert fritz_tools.switch_nodes == {"Switch": "aa:bb:cc:dd:ee:01"}
+    dispatch_mock.assert_any_call(hass, fritz_tools.signal_switch_node_new)
 
 
 async def test_trigger_methods(

@@ -23,6 +23,7 @@ class Device:
     wan_access: bool | None = None
     cur_rx_rate: int | None = None
     cur_tx_rate: int | None = None
+    wifi_band: str | None = None
 
 
 class Interface(TypedDict):
@@ -33,6 +34,7 @@ class Interface(TypedDict):
     op_mode: str
     ssid: str | None
     type: str
+    band: str
 
 
 HostAttributes = TypedDict(
@@ -88,6 +90,7 @@ class FritzDevice:
     _name: str
     _ssid: str | None
     _wan_access: bool | None
+    _wifi_band: str | None
 
     def __init__(self, mac: str, dev_info: Device, consider_home: float) -> None:
         """Initialize device info."""
@@ -120,6 +123,7 @@ class FritzDevice:
         self._wan_access = dev_info.wan_access
         self._cur_rx_rate = dev_info.cur_rx_rate
         self._cur_tx_rate = dev_info.cur_tx_rate
+        self._wifi_band = dev_info.wifi_band
 
     @property
     def connected_to(self) -> str:
@@ -160,6 +164,11 @@ class FritzDevice:
     def ssid(self) -> str | None:
         """Return device connected SSID."""
         return self._ssid
+
+    @property
+    def wifi_band(self) -> str | None:
+        """Return WiFi frequency band (e.g. '2.4 GHz', '5 GHz')."""
+        return self._wifi_band
 
     @property
     def wan_access(self) -> bool | None:

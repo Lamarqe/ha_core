@@ -105,6 +105,8 @@ class FritzBoxTracker(FritzDeviceBase, ScannerEntity):
             attrs["connection_type"] = device.connection_type
         if device.ssid:
             attrs["ssid"] = device.ssid
+        if device.wifi_band:
+            attrs["wifi_band"] = device.wifi_band
         attrs["ip"] = device.ip_address
         attrs["mac"] = self._mac
         if device.cur_rx_rate is not None:

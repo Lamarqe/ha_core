@@ -385,6 +385,21 @@ async def async_setup_entry(
                         FritzMeshNodeSensor(avm_wrapper, node_name, node_mac, node_desc)
                     )
 
+        for node_name, node_mac in avm_wrapper.switch_nodes.items():
+            for node_desc in MESH_NODE_SENSOR_TYPES:
+                sensor_key = f"{node_mac}_{node_desc.key}"
+                if sensor_key not in fritz_data.mesh_node_sensors[entry.entry_id]:
+                    fritz_data.mesh_node_sensors[entry.entry_id].add(sensor_key)
+                    entities.append(
+                        FritzMeshNodeSensor(
+                            avm_wrapper,
+                            node_name,
+                            node_mac,
+                            node_desc,
+                            node_type="switch",
+                        )
+                    )
+
         @callback
         def add_mesh_node_sensors() -> None:
             new_entities: list[FritzMeshNodeSensor] = []
@@ -400,9 +415,33 @@ async def async_setup_entry(
                         )
             async_add_entities(new_entities)
 
+        @callback
+        def add_switch_node_sensors() -> None:
+            new_entities: list[FritzMeshNodeSensor] = []
+            for node_name, node_mac in avm_wrapper.switch_nodes.items():
+                for node_desc in MESH_NODE_SENSOR_TYPES:
+                    sensor_key = f"{node_mac}_{node_desc.key}"
+                    if sensor_key not in fritz_data.mesh_node_sensors[entry.entry_id]:
+                        fritz_data.mesh_node_sensors[entry.entry_id].add(sensor_key)
+                        new_entities.append(
+                            FritzMeshNodeSensor(
+                                avm_wrapper,
+                                node_name,
+                                node_mac,
+                                node_desc,
+                                node_type="switch",
+                            )
+                        )
+            async_add_entities(new_entities)
+
         entry.async_on_unload(
             async_dispatcher_connect(
                 hass, avm_wrapper.signal_mesh_node_new, add_mesh_node_sensors
+            )
+        )
+        entry.async_on_unload(
+            async_dispatcher_connect(
+                hass, avm_wrapper.signal_switch_node_new, add_switch_node_sensors
             )
         )
 
@@ -433,12 +472,17 @@ class FritzMeshNodeSensor(FritzMeshNodeEntity, SensorEntity):
         node_name: str,
         node_mac: str,
         description: FritzMeshNodeSensorEntityDescription,
+        node_type: str = "slave",
     ) -> None:
         """Initialize mesh node sensor."""
         super().__init__(avm_wrapper, node_name, node_mac)
         self.entity_description = description
         self._attr_unique_id = f"{node_mac}_{description.key}"
         self._is_master = node_mac == avm_wrapper.mac
+        if self._is_master:
+            self._node_type = "master"
+        else:
+            self._node_type = node_type
 
     @property
     def native_value(self) -> StateType:
@@ -454,18 +498,23 @@ class FritzMeshNodeSensor(FritzMeshNodeEntity, SensorEntity):
             for d in devices.values()
             if d.connected_to == self._node_name and d.is_connected
         ]
-        rx_kbps: int | None = (
-            sum(d.cur_rx_rate for d in node_devices if d.cur_rx_rate is not None)
-            or None
+        rx_kbps, tx_kbps = self._avm_wrapper.node_uplink_rates.get(
+            self._node_mac, (None, None)
         )
-        tx_kbps: int | None = (
-            sum(d.cur_tx_rate for d in node_devices if d.cur_tx_rate is not None)
-            or None
-        )
+        if rx_kbps is None and tx_kbps is None:
+            rx_kbps = (
+                sum(d.cur_rx_rate for d in node_devices if d.cur_rx_rate is not None)
+                or None
+            )
+            tx_kbps = (
+                sum(d.cur_tx_rate for d in node_devices if d.cur_tx_rate is not None)
+                or None
+            )
         wifi_count = sum(1 for d in node_devices if d.connection_type.upper() == "WLAN")
         lan_count = sum(1 for d in node_devices if d.connection_type.upper() == "LAN")
         return {
             "node_name": self._node_name,
+            "node_type": self._node_type,
             "is_master": self._is_master,
             "fritz_unique_id": self._avm_wrapper.unique_id,
             "fritz_host": self._avm_wrapper.host,
