@@ -512,6 +512,7 @@ class FritzMeshNodeSensor(FritzMeshNodeEntity, SensorEntity):
             )
         wifi_count = sum(1 for d in node_devices if d.connection_type.upper() == "WLAN")
         lan_count = sum(1 for d in node_devices if d.connection_type.upper() == "LAN")
+        parent_node = self._avm_wrapper.slave_parent_nodes.get(self._node_mac)
         return {
             "node_name": self._node_name,
             "node_type": self._node_type,
@@ -523,4 +524,5 @@ class FritzMeshNodeSensor(FritzMeshNodeEntity, SensorEntity):
             "lan_devices": lan_count,
             "rx_rate_kbps": rx_kbps,
             "tx_rate_kbps": tx_kbps,
+            **({"parent_node": parent_node} if parent_node else {}),
         }

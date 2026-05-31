@@ -566,7 +566,7 @@ async def test_async_scan_devices_lan_backhaul_slave_no_connected_to(
 ) -> None:
     """Test LAN-backhaul slave leaves connected_to unset when no switch node is present.
 
-    When a switch node with device_model='Switch' is present in the topology its
+    When a switch node with device_class='NETWORK_SWITCH' is present in the topology its
     interfaces are added to mesh_intf, allowing the fallback scan to resolve the
     slave's uplink.  This test covers the degenerate case where the topology
     contains only the raw switch-port link without a recognised switch node.
@@ -783,7 +783,7 @@ async def test_async_scan_devices_client_connected_to_switch(
             },
             {
                 "is_meshed": False,
-                "device_model": "Switch",
+                "device_class": "NETWORK_SWITCH",
                 "device_name": "Switch",
                 "node_interfaces": [
                     {
@@ -881,26 +881,42 @@ async def test_async_scan_devices_switch_node_registered(
                         "ssid": None,
                         "type": "LAN",
                         "name": "LAN:1",
-                        "node_links": [],
+                        "node_links": [
+                            {
+                                "state": "CONNECTED",
+                                "node_interface_1_uid": "master-lan1",
+                                "node_interface_2_uid": "switch-uplink",
+                                "cur_data_rate_rx": 1000000,
+                                "cur_data_rate_tx": 1000000,
+                            }
+                        ],
                     }
                 ],
             },
             {
                 "is_meshed": False,
-                "device_model": "Switch",
+                "device_class": "NETWORK_SWITCH",
                 "device_name": "Switch",
-                # device_mac_address is the stable canonical identifier — it must
-                # be used regardless of interface ordering or hosts Active state.
                 "device_mac_address": "AA:BB:CC:DD:EE:01",
                 "node_interfaces": [
                     {
-                        "uid": "switch-port0",
+                        # Uplink port — connected to master. Its MAC is stable
+                        # (derived from master MAC) and used as canonical MAC.
+                        "uid": "switch-uplink",
                         "mac_address": "FA:CE:00:14:D3:FA",
                         "op_mode": "",
                         "ssid": None,
                         "type": "LAN",
                         "name": "",
-                        "node_links": [],
+                        "node_links": [
+                            {
+                                "state": "CONNECTED",
+                                "node_interface_1_uid": "master-lan1",
+                                "node_interface_2_uid": "switch-uplink",
+                                "cur_data_rate_rx": 1000000,
+                                "cur_data_rate_tx": 1000000,
+                            }
+                        ],
                     },
                     {
                         "uid": "switch-port1",
@@ -915,8 +931,6 @@ async def test_async_scan_devices_switch_node_registered(
             },
         ]
     }
-    # Hosts has an active entry for switch-port1 (FB), NOT device_mac_address.
-    # The registered MAC must still be device_mac_address (AA:BB:CC:DD:EE:01).
     hosts = {
         "FA:CE:00:14:D3:FB": Device(
             connected=True,
@@ -947,11 +961,11 @@ async def test_async_scan_devices_switch_node_registered(
     device_registry = dr.async_get(hass)
     assert (
         device_registry.async_get_device(
-            connections={(dr.CONNECTION_NETWORK_MAC, "aa:bb:cc:dd:ee:01")}
+            connections={(dr.CONNECTION_NETWORK_MAC, "fa:ce:00:14:d3:fa")}
         )
         is not None
     )
-    assert fritz_tools.switch_nodes == {"Switch": "aa:bb:cc:dd:ee:01"}
+    assert fritz_tools.switch_nodes == {"Switch": "fa:ce:00:14:d3:fa"}
     dispatch_mock.assert_any_call(hass, fritz_tools.signal_switch_node_new)
 
 
