@@ -5,6 +5,7 @@ from collections.abc import Callable, Mapping
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from functools import partial
+import hashlib
 import logging
 import re
 from typing import Any, TypedDict, cast
@@ -163,7 +164,7 @@ class FritzBoxTools(DataUpdateCoordinator[UpdateCoordinatorDataType]):
 
         self._devices: dict[str, FritzDevice] = {}
         self._mesh_nodes: dict[str, str] = {}
-        self._switch_nodes: dict[str, str] = {}
+        self._switch_nodes: dict[str, str] = {}  # switch_key -> friendly_name
         self._node_uplink_rates: dict[str, tuple[int | None, int | None]] = {}
         self._slave_parent_nodes: dict[str, str] = {}
         self._options: Mapping[str, Any] | None = None
@@ -437,7 +438,7 @@ class FritzBoxTools(DataUpdateCoordinator[UpdateCoordinatorDataType]):
 
     @property
     def switch_nodes(self) -> dict[str, str]:
-        """Return switch nodes mapping device_name to formatted MAC address."""
+        """Return switch nodes mapping switch_key to friendly display name."""
         return self._switch_nodes
 
     @property
@@ -638,30 +639,46 @@ class FritzBoxTools(DataUpdateCoordinator[UpdateCoordinatorDataType]):
         if new_nodes:
             async_dispatcher_send(self.hass, self.signal_mesh_node_new)
 
+    @staticmethod
+    def _switch_key_from_node(node: dict[str, Any]) -> str:
+        """Return a stable unique key for a LAN switch node.
+
+        The key is "switch_" followed by the first 8 hex characters of the SHA-256
+        hash of all interface MAC addresses (sorted, comma-separated).  The set of
+        interface MACs is fixed hardware topology and does not change between scans
+        or reboots, giving a completely stable identifier.
+        """
+        macs = sorted(
+            interf["mac_address"]
+            for interf in node.get("node_interfaces", [])
+            if interf.get("mac_address")
+        )
+        digest = hashlib.sha256(",".join(macs).encode()).hexdigest()[:8]
+        return f"switch_{digest}"
+
     def _update_switch_nodes(
         self,
         new_switch_nodes: dict[str, str],
         new_switch_uplink_rates: dict[str, tuple[int | None, int | None]],
     ) -> None:
         """Update tracked LAN switch nodes, register device entries, and signal changes."""
-        new_nodes = set(new_switch_nodes) - set(self._switch_nodes)
+        added_keys = set(new_switch_nodes) - set(self._switch_nodes)
         self._switch_nodes = new_switch_nodes
-        for node_name, mac in new_switch_nodes.items():
-            self._node_uplink_rates[mac] = new_switch_uplink_rates.get(
-                node_name, (None, None)
+        for switch_key in new_switch_nodes:
+            self._node_uplink_rates[switch_key] = new_switch_uplink_rates.get(
+                switch_key, (None, None)
             )
 
-        for node_name in new_nodes:
-            node_mac = new_switch_nodes[node_name]
+        for switch_key in added_keys:
             dr.async_get(self.hass).async_get_or_create(
                 config_entry_id=self.config_entry.entry_id,
-                connections={(CONNECTION_NETWORK_MAC, node_mac)},
+                identifiers={(DOMAIN, switch_key)},
                 manufacturer="Generic",
-                name=node_name,
+                name=switch_key,
                 via_device=(DOMAIN, self.unique_id),
             )
 
-        if new_nodes:
+        if added_keys:
             async_dispatcher_send(self.hass, self.signal_switch_node_new)
 
     def _register_switch_nodes(
@@ -678,34 +695,20 @@ class FritzBoxTools(DataUpdateCoordinator[UpdateCoordinatorDataType]):
             if node["is_meshed"] or not self._is_switch_node(node):
                 continue
 
-            node_name = node.get("device_name") or node["device_model"]
+            switch_key = self._switch_key_from_node(node)
 
-            # Resolve the display name first so mesh_intf, _switch_nodes, and
-            # device.connected_to all use the same value. Fritz!Box stores the
-            # user-visible name in FriendlyName; HostName is a slugified version.
-            # Prefer the active host entry (Active=1) for a stable, deterministic
-            # name across scans regardless of interface ordering.
-            fallback_name: str | None = None
+            # Prefer FriendlyName from the active host entry; fall back to switch_key.
+            friendly_name: str = switch_key
             for interf in node["node_interfaces"]:
                 host = hosts.get(interf["mac_address"])
-                if host is None or not host.name:
-                    continue
-                if fallback_name is None:
-                    fallback_name = host.name
-                if host.connected:
-                    node_name = host.name
+                if host and host.name and host.connected:
+                    friendly_name = host.name
                     break
-            else:
-                if fallback_name:
-                    node_name = fallback_name
 
-            # Detect uplink interface before adding switch interfaces to mesh_intf,
-            # so only the pre-existing meshed interfaces (master/slaves) are matched.
-            # The uplink port MAC is derived from the master's MAC and is stable
-            # across Fritz!Box reboots — use it as the canonical switch MAC.
+            # Detect uplink link speed (before adding switch interfaces to mesh_intf
+            # so only pre-existing meshed interfaces are matched).
             uplink_rx: int | None = None
             uplink_tx: int | None = None
-            uplink_mac: str | None = None
             for interf in node["node_interfaces"]:
                 for link in interf["node_links"]:
                     if link.get("state") == "CONNECTED" and mesh_intf.get(
@@ -713,15 +716,22 @@ class FritzBoxTools(DataUpdateCoordinator[UpdateCoordinatorDataType]):
                     ):
                         uplink_rx = link.get("cur_data_rate_rx") or None
                         uplink_tx = link.get("cur_data_rate_tx") or None
-                        uplink_mac = dr.format_mac(interf["mac_address"])
                         break
-                if uplink_mac is not None:
+                if uplink_rx is not None:
                     break
+
+            if uplink_rx is None:
+                _LOGGER.warning(
+                    "LAN switch node %s has no connected uplink to a mesh node; "
+                    "skipping switch registration",
+                    node.get("uid"),
+                )
+                continue
 
             for interf in node["node_interfaces"]:
                 int_mac = interf["mac_address"]
                 mesh_intf[interf["uid"]] = Interface(
-                    device=node_name,
+                    device=switch_key,
                     mac=int_mac,
                     op_mode=interf.get("op_mode", ""),
                     ssid=interf.get("ssid", ""),
@@ -735,17 +745,8 @@ class FritzBoxTools(DataUpdateCoordinator[UpdateCoordinatorDataType]):
                             link,
                         )
 
-            if uplink_mac is None:
-                _LOGGER.warning(
-                    "LAN switch node %s has no connected uplink to a mesh node; "
-                    "skipping switch registration",
-                    node.get("uid"),
-                )
-                continue
-
-            if node_name not in new_switch_nodes:
-                new_switch_nodes[node_name] = uplink_mac
-                new_switch_uplink_rates[node_name] = (uplink_rx, uplink_tx)
+            new_switch_nodes[switch_key] = friendly_name
+            new_switch_uplink_rates[switch_key] = (uplink_rx, uplink_tx)
 
         self._update_switch_nodes(new_switch_nodes, new_switch_uplink_rates)
 
@@ -1051,13 +1052,13 @@ class FritzBoxTools(DataUpdateCoordinator[UpdateCoordinatorDataType]):
         valid_connections.update(
             {(CONNECTION_NETWORK_MAC, mac) for mac in self._mesh_nodes.values()}
         )
-        valid_connections.update(
-            {(CONNECTION_NETWORK_MAC, mac) for mac in self._switch_nodes.values()}
-        )
+        valid_identifiers = {(DOMAIN, switch_key) for switch_key in self._switch_nodes}
         for device in dr.async_entries_for_config_entry(
             device_reg, config_entry.entry_id
         ):
-            if not any(con in device.connections for con in valid_connections):
+            if not any(
+                con in device.connections for con in valid_connections
+            ) and not any(idf in device.identifiers for idf in valid_identifiers):
                 _LOGGER.debug("Removing obsolete device entry %s", device.name)
                 device_reg.async_update_device(
                     device.id, remove_config_entry_id=config_entry.entry_id

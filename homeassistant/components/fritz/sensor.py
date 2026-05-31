@@ -24,12 +24,13 @@ from homeassistant.const import (
     UnitOfTemperature,
 )
 from homeassistant.core import HomeAssistant, callback
+from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 from homeassistant.helpers.typing import StateType
 from homeassistant.util.dt import utcnow
 
-from .const import DSL_CONNECTION, MeshRoles
+from .const import DOMAIN, DSL_CONNECTION, MeshRoles
 from .coordinator import FRITZ_DATA_KEY, AvmWrapper, FritzConfigEntry
 from .entity import (
     FritzBoxBaseCoordinatorEntity,
@@ -385,16 +386,16 @@ async def async_setup_entry(
                         FritzMeshNodeSensor(avm_wrapper, node_name, node_mac, node_desc)
                     )
 
-        for node_name, node_mac in avm_wrapper.switch_nodes.items():
+        for switch_key, friendly_name in avm_wrapper.switch_nodes.items():
             for node_desc in MESH_NODE_SENSOR_TYPES:
-                sensor_key = f"{node_mac}_{node_desc.key}"
+                sensor_key = f"{switch_key}_{node_desc.key}"
                 if sensor_key not in fritz_data.mesh_node_sensors[entry.entry_id]:
                     fritz_data.mesh_node_sensors[entry.entry_id].add(sensor_key)
                     entities.append(
                         FritzMeshNodeSensor(
                             avm_wrapper,
-                            node_name,
-                            node_mac,
+                            friendly_name,
+                            switch_key,
                             node_desc,
                             node_type="switch",
                         )
@@ -418,16 +419,16 @@ async def async_setup_entry(
         @callback
         def add_switch_node_sensors() -> None:
             new_entities: list[FritzMeshNodeSensor] = []
-            for node_name, node_mac in avm_wrapper.switch_nodes.items():
+            for switch_key, friendly_name in avm_wrapper.switch_nodes.items():
                 for node_desc in MESH_NODE_SENSOR_TYPES:
-                    sensor_key = f"{node_mac}_{node_desc.key}"
+                    sensor_key = f"{switch_key}_{node_desc.key}"
                     if sensor_key not in fritz_data.mesh_node_sensors[entry.entry_id]:
                         fritz_data.mesh_node_sensors[entry.entry_id].add(sensor_key)
                         new_entities.append(
                             FritzMeshNodeSensor(
                                 avm_wrapper,
-                                node_name,
-                                node_mac,
+                                friendly_name,
+                                switch_key,
                                 node_desc,
                                 node_type="switch",
                             )
@@ -483,6 +484,9 @@ class FritzMeshNodeSensor(FritzMeshNodeEntity, SensorEntity):
             self._node_type = "master"
         else:
             self._node_type = node_type
+        if node_type == "switch":
+            # Switch devices are registered by identifier, not MAC connection.
+            self._attr_device_info = DeviceInfo(identifiers={(DOMAIN, node_mac)})
 
     @property
     def native_value(self) -> StateType:
@@ -493,10 +497,11 @@ class FritzMeshNodeSensor(FritzMeshNodeEntity, SensorEntity):
     def extra_state_attributes(self) -> dict[str, Any]:
         """Return extra attributes for the connected-devices sensor."""
         devices = self._avm_wrapper.devices
+        match_key = self._node_mac if self._node_type == "switch" else self._node_name
         node_devices = [
             d
             for d in devices.values()
-            if d.connected_to == self._node_name and d.is_connected
+            if d.connected_to == match_key and d.is_connected
         ]
         rx_kbps, tx_kbps = self._avm_wrapper.node_uplink_rates.get(
             self._node_mac, (None, None)

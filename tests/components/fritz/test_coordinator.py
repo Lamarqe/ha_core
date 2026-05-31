@@ -795,11 +795,12 @@ async def test_async_scan_devices_client_connected_to_switch(
                         "name": "",
                         "node_links": [
                             {
+                                # Same link as on master-lan1 — appears on both sides.
                                 "state": "CONNECTED",
-                                "node_interface_1_uid": "switch-port1",
-                                "node_interface_2_uid": "client-intf",
-                                "cur_data_rate_rx": 100000,
-                                "cur_data_rate_tx": 100000,
+                                "node_interface_1_uid": "master-lan1",
+                                "node_interface_2_uid": "switch-uplink",
+                                "cur_data_rate_rx": 1000000,
+                                "cur_data_rate_tx": 1000000,
                             }
                         ],
                     },
@@ -855,7 +856,7 @@ async def test_async_scan_devices_client_connected_to_switch(
     # not for any of the switch's synthetic port MACs.
     assert manage.call_count == 1
     dev_info = manage.call_args.args[0]
-    assert dev_info.connected_to == "Switch"
+    assert dev_info.connected_to == "switch_45e6b3f2"
     assert dev_info.connection_type == "LAN"
     assert dev_info.cur_rx_rate == 100000
 
@@ -958,14 +959,15 @@ async def test_async_scan_devices_switch_node_registered(
     ):
         await fritz_tools.async_scan_devices()
 
+    expected_key = (
+        "switch_45e6b3f2"  # sha256("FA:CE:00:14:D3:FA,FA:CE:00:14:D3:FB")[:8]
+    )
     device_registry = dr.async_get(hass)
     assert (
-        device_registry.async_get_device(
-            connections={(dr.CONNECTION_NETWORK_MAC, "fa:ce:00:14:d3:fa")}
-        )
+        device_registry.async_get_device(identifiers={("fritz", expected_key)})
         is not None
     )
-    assert fritz_tools.switch_nodes == {"Switch": "fa:ce:00:14:d3:fa"}
+    assert expected_key in fritz_tools.switch_nodes
     dispatch_mock.assert_any_call(hass, fritz_tools.signal_switch_node_new)
 
 
