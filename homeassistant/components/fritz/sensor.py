@@ -491,7 +491,8 @@ class FritzMeshNodeSensor(FritzMeshNodeEntity, SensorEntity):
     @property
     def native_value(self) -> StateType:
         """Return the value reported by the sensor."""
-        return self.entity_description.value_fn(self, self._node_name)
+        match_key = self._node_mac if self._node_type == "switch" else self._node_name
+        return self.entity_description.value_fn(self, match_key)
 
     @property
     def extra_state_attributes(self) -> dict[str, Any]:

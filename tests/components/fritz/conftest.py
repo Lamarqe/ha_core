@@ -10,7 +10,12 @@ from fritzconnection.lib.fritzhosts import FritzHosts
 from fritzconnection.lib.fritzstatus import FritzStatus
 import pytest
 
-from homeassistant.components.fritz.coordinator import FritzConnectionCached
+from homeassistant.components.fritz.const import DOMAIN
+from homeassistant.components.fritz.coordinator import (
+    FritzBoxTools,
+    FritzConnectionCached,
+)
+from homeassistant.core import HomeAssistant
 
 from .const import (
     MOCK_FB_SERVICES,
@@ -18,7 +23,10 @@ from .const import (
     MOCK_MESH_DATA,
     MOCK_MODELNAME,
     MOCK_STATUS_CONNECTION_DATA,
+    MOCK_USER_DATA,
 )
+
+from tests.common import MockConfigEntry
 
 LOGGER = logging.getLogger(__name__)
 
@@ -172,3 +180,42 @@ def fs_class_mock() -> Generator[type[FritzStatus]]:
         patch.object(FritzStatus, "has_wan_enabled", True),
     ):
         yield result
+
+
+@pytest.fixture(name="mock_config_entry")
+def fixture_mock_config_entry() -> MockConfigEntry:
+    """Return a mock config entry with host, username, password, and port."""
+    return MockConfigEntry(
+        domain=DOMAIN,
+        data=MOCK_USER_DATA,
+        unique_id="1234",
+    )
+
+
+@pytest.fixture
+def patch_fritzconnectioncached_globally(fc_data) -> Generator[FritzConnectionMock]:
+    """Patch FritzConnectionCached globally for coordinator-only tests."""
+    mock_conn = FritzConnectionMock(fc_data)
+    with patch(
+        "homeassistant.components.fritz.coordinator.FritzConnectionCached",
+        return_value=mock_conn,
+    ):
+        yield mock_conn
+
+
+@pytest.fixture(name="fritz_tools")
+async def fixture_fritz_tools(
+    hass: HomeAssistant,
+    mock_config_entry: MockConfigEntry,
+    patch_fritzconnectioncached_globally: FritzConnectionMock,
+) -> FritzBoxTools:
+    """Return FritzBoxTools instance with mocked connection."""
+    mock_config_entry.add_to_hass(hass)
+    coordinator = FritzBoxTools(
+        hass=hass,
+        config_entry=mock_config_entry,
+        password=mock_config_entry.data["password"],
+        port=mock_config_entry.data["port"],
+    )
+    await coordinator.async_setup()
+    return coordinator
