@@ -34,7 +34,7 @@
     'suggested_object_id': None,
     'supported_features': 0,
     'translation_key': 'mesh_connected_devices',
-    'unique_id': '1c:ed:6f:12:34:21_mesh_connected_devices',
+    'unique_id': 'fritz-repeater_mesh_connected_devices',
     'unit_of_measurement': None,
   })
 # ---
@@ -49,6 +49,7 @@
       'node_mac': '1c:ed:6f:12:34:21',
       'node_name': 'fritz-repeater',
       'node_type': 'slave',
+      'node_uid': 'fritz-repeater',
       'parent_node': 'fritz.box',
       'rx_rate_kbps': 144400,
       'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
@@ -98,7 +99,7 @@
     'suggested_object_id': None,
     'supported_features': 0,
     'translation_key': 'mesh_connected_devices',
-    'unique_id': '1c:ed:6f:12:34:11_mesh_connected_devices',
+    'unique_id': 'fritz.box_mesh_connected_devices',
     'unit_of_measurement': None,
   })
 # ---
@@ -113,6 +114,7 @@
       'node_mac': '1c:ed:6f:12:34:11',
       'node_name': 'fritz.box',
       'node_type': 'master',
+      'node_uid': 'fritz.box',
       'rx_rate_kbps': 144400,
       'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
       'tx_rate_kbps': 130000,
@@ -1019,7 +1021,7 @@
     'suggested_object_id': None,
     'supported_features': 0,
     'translation_key': 'mesh_connected_devices',
-    'unique_id': '1c:ed:6f:12:34:21_mesh_connected_devices',
+    'unique_id': 'fritz-repeater_mesh_connected_devices',
     'unit_of_measurement': None,
   })
 # ---
@@ -1034,6 +1036,7 @@
       'node_mac': '1c:ed:6f:12:34:21',
       'node_name': 'fritz-repeater',
       'node_type': 'slave',
+      'node_uid': 'fritz-repeater',
       'parent_node': 'fritz.box',
       'rx_rate_kbps': 144400,
       'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
@@ -1083,7 +1086,7 @@
     'suggested_object_id': None,
     'supported_features': 0,
     'translation_key': 'mesh_connected_devices',
-    'unique_id': '1c:ed:6f:12:34:11_mesh_connected_devices',
+    'unique_id': 'fritz.box_mesh_connected_devices',
     'unit_of_measurement': None,
   })
 # ---
@@ -1098,6 +1101,7 @@
       'node_mac': '1c:ed:6f:12:34:11',
       'node_name': 'fritz.box',
       'node_type': 'master',
+      'node_uid': 'fritz.box',
       'rx_rate_kbps': 144400,
       'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
       'tx_rate_kbps': 130000,
@@ -2004,7 +2008,7 @@
     'suggested_object_id': None,
     'supported_features': 0,
     'translation_key': 'mesh_connected_devices',
-    'unique_id': '1c:ed:6f:12:34:21_mesh_connected_devices',
+    'unique_id': 'fritz-repeater_mesh_connected_devices',
     'unit_of_measurement': None,
   })
 # ---
@@ -2019,6 +2023,7 @@
       'node_mac': '1c:ed:6f:12:34:21',
       'node_name': 'fritz-repeater',
       'node_type': 'slave',
+      'node_uid': 'fritz-repeater',
       'parent_node': 'fritz.box',
       'rx_rate_kbps': 144400,
       'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
@@ -2068,7 +2073,7 @@
     'suggested_object_id': None,
     'supported_features': 0,
     'translation_key': 'mesh_connected_devices',
-    'unique_id': '1c:ed:6f:12:34:11_mesh_connected_devices',
+    'unique_id': 'fritz.box_mesh_connected_devices',
     'unit_of_measurement': None,
   })
 # ---
@@ -2083,6 +2088,7 @@
       'node_mac': '1c:ed:6f:12:34:11',
       'node_name': 'fritz.box',
       'node_type': 'master',
+      'node_uid': 'fritz.box',
       'rx_rate_kbps': 144400,
       'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
       'tx_rate_kbps': 130000,
@@ -2989,7 +2995,7 @@
     'suggested_object_id': None,
     'supported_features': 0,
     'translation_key': 'mesh_connected_devices',
-    'unique_id': '1c:ed:6f:12:34:21_mesh_connected_devices',
+    'unique_id': 'fritz-repeater_mesh_connected_devices',
     'unit_of_measurement': None,
   })
 # ---
@@ -3004,6 +3010,7 @@
       'node_mac': '1c:ed:6f:12:34:21',
       'node_name': 'fritz-repeater',
       'node_type': 'slave',
+      'node_uid': 'fritz-repeater',
       'parent_node': 'fritz.box',
       'rx_rate_kbps': 144400,
       'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
@@ -3053,7 +3060,7 @@
     'suggested_object_id': None,
     'supported_features': 0,
     'translation_key': 'mesh_connected_devices',
-    'unique_id': '1c:ed:6f:12:34:11_mesh_connected_devices',
+    'unique_id': 'fritz.box_mesh_connected_devices',
     'unit_of_measurement': None,
   })
 # ---
@@ -3068,6 +3075,7 @@
       'node_mac': '1c:ed:6f:12:34:11',
       'node_name': 'fritz.box',
       'node_type': 'master',
+      'node_uid': 'fritz.box',
       'rx_rate_kbps': 144400,
       'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
       'tx_rate_kbps': 130000,
@@ -3974,7 +3982,7 @@
     'suggested_object_id': None,
     'supported_features': 0,
     'translation_key': 'mesh_connected_devices',
-    'unique_id': '1c:ed:6f:12:34:21_mesh_connected_devices',
+    'unique_id': 'fritz-repeater_mesh_connected_devices',
     'unit_of_measurement': None,
   })
 # ---
@@ -3989,6 +3997,7 @@
       'node_mac': '1c:ed:6f:12:34:21',
       'node_name': 'fritz-repeater',
       'node_type': 'slave',
+      'node_uid': 'fritz-repeater',
       'parent_node': 'fritz.box',
       'rx_rate_kbps': 144400,
       'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
@@ -4038,7 +4047,7 @@
     'suggested_object_id': None,
     'supported_features': 0,
     'translation_key': 'mesh_connected_devices',
-    'unique_id': '1c:ed:6f:12:34:11_mesh_connected_devices',
+    'unique_id': 'fritz.box_mesh_connected_devices',
     'unit_of_measurement': None,
   })
 # ---
@@ -4053,6 +4062,7 @@
       'node_mac': '1c:ed:6f:12:34:11',
       'node_name': 'fritz.box',
       'node_type': 'master',
+      'node_uid': 'fritz.box',
       'rx_rate_kbps': 144400,
       'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
       'tx_rate_kbps': 130000,

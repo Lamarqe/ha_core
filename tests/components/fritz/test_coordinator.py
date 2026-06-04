@@ -49,17 +49,6 @@ from .const import (
 from tests.common import MockConfigEntry, async_fire_time_changed
 
 
-@pytest.fixture(name="mock_config_entry")
-def fixture_mock_config_entry() -> MockConfigEntry:
-    """Return a mock config entry with host, username, password, and port."""
-
-    return MockConfigEntry(
-        domain=DOMAIN,
-        data=MOCK_USER_DATA,
-        unique_id="1234",
-    )
-
-
 @pytest.mark.parametrize(
     "attr",
     [

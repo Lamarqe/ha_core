@@ -433,8 +433,8 @@ class FritzBoxTools(DataUpdateCoordinator[UpdateCoordinatorDataType]):
         return f"{DOMAIN}-mesh-node-new-{self._unique_id}"
 
     @property
-    def switch_nodes(self) -> dict[str, str]:
-        """Return switch nodes mapping switch_key to friendly display name."""
+    def switch_nodes(self) -> dict[str, tuple[str, str]]:
+        """Return switch nodes mapping switch_key to (friendly display name, mac_address_representative)."""
         return self._mesh.switch_nodes if self._mesh else {}
 
     @property

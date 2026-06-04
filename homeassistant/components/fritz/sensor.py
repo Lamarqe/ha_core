@@ -321,14 +321,14 @@ DEVICE_SENSOR_TYPES: tuple[FritzDeviceSensorEntityDescription, ...] = (
 class FritzMeshNodeSensorEntityDescription(SensorEntityDescription):
     """Describes a Fritz mesh node sensor entity."""
 
-    value_fn: Callable[..., StateType]
+    value_fn: Callable[[FritzMeshNodeSensor, str], StateType]
 
 
-def _mesh_connected_devices(wrapper: FritzMeshNodeSensor, node_name: str) -> int:
+def _mesh_connected_devices(sensor: FritzMeshNodeSensor, node_uid: str) -> int:
     return sum(
         1
-        for d in wrapper.coordinator.devices.values()
-        if d.connected_to == node_name and d.is_connected
+        for d in sensor.coordinator.devices.values()
+        if d.connected_to == node_uid and d.is_connected
     )
 
 
@@ -386,7 +386,7 @@ async def async_setup_entry(
                         FritzMeshNodeSensor(avm_wrapper, node_name, node_mac, node_desc)
                     )
 
-        for switch_key, friendly_name in avm_wrapper.switch_nodes.items():
+        for switch_key, (friendly_name, switch_mac) in avm_wrapper.switch_nodes.items():
             for node_desc in MESH_NODE_SENSOR_TYPES:
                 sensor_key = f"{switch_key}_{node_desc.key}"
                 if sensor_key not in fritz_data.mesh_node_sensors[entry.entry_id]:
@@ -395,9 +395,9 @@ async def async_setup_entry(
                         FritzMeshNodeSensor(
                             avm_wrapper,
                             friendly_name,
-                            switch_key,
+                            switch_mac,
                             node_desc,
-                            node_type="switch",
+                            switch_key,
                         )
                     )
 
@@ -419,7 +419,10 @@ async def async_setup_entry(
         @callback
         def add_switch_node_sensors() -> None:
             new_entities: list[FritzMeshNodeSensor] = []
-            for switch_key, friendly_name in avm_wrapper.switch_nodes.items():
+            for switch_key, (
+                friendly_name,
+                switch_mac,
+            ) in avm_wrapper.switch_nodes.items():
                 for node_desc in MESH_NODE_SENSOR_TYPES:
                     sensor_key = f"{switch_key}_{node_desc.key}"
                     if sensor_key not in fritz_data.mesh_node_sensors[entry.entry_id]:
@@ -428,9 +431,9 @@ async def async_setup_entry(
                             FritzMeshNodeSensor(
                                 avm_wrapper,
                                 friendly_name,
-                                switch_key,
+                                switch_mac,
                                 node_desc,
-                                node_type="switch",
+                                switch_key,
                             )
                         )
             async_add_entities(new_entities)
@@ -473,36 +476,36 @@ class FritzMeshNodeSensor(FritzMeshNodeEntity, SensorEntity):
         node_name: str,
         node_mac: str,
         description: FritzMeshNodeSensorEntityDescription,
-        node_type: str = "slave",
+        node_uid: str | None = None,
     ) -> None:
         """Initialize mesh node sensor."""
-        super().__init__(avm_wrapper, node_name, node_mac)
+        super().__init__(avm_wrapper, node_name, node_mac, node_uid)
         self.entity_description = description
-        self._attr_unique_id = f"{node_mac}_{description.key}"
+        self._attr_unique_id = f"{self._node_uid}_{description.key}"
+
         self._is_master = node_mac == avm_wrapper.mac
         if self._is_master:
             self._node_type = "master"
+        elif node_uid is None:
+            self._node_type = "slave"
         else:
-            self._node_type = node_type
-        if node_type == "switch":
+            self._node_type = "switch"
             # Switch devices are registered by identifier, not MAC connection.
-            self._attr_device_info = DeviceInfo(identifiers={(DOMAIN, node_mac)})
+            self._attr_device_info = DeviceInfo(identifiers={(DOMAIN, node_uid)})
 
     @property
     def native_value(self) -> StateType:
         """Return the value reported by the sensor."""
-        match_key = self._node_mac if self._node_type == "switch" else self._node_name
-        return self.entity_description.value_fn(self, match_key)
+        return self.entity_description.value_fn(self, self._node_uid)
 
     @property
     def extra_state_attributes(self) -> dict[str, Any]:
         """Return extra attributes for the connected-devices sensor."""
         devices = self._avm_wrapper.devices
-        match_key = self._node_mac if self._node_type == "switch" else self._node_name
         node_devices = [
             d
             for d in devices.values()
-            if d.connected_to == match_key and d.is_connected
+            if d.connected_to == self._node_uid and d.is_connected
         ]
         rx_kbps, tx_kbps = self._avm_wrapper.node_uplink_rates.get(
             self._node_mac, (None, None)
@@ -526,6 +529,7 @@ class FritzMeshNodeSensor(FritzMeshNodeEntity, SensorEntity):
             "fritz_unique_id": self._avm_wrapper.unique_id,
             "fritz_host": self._avm_wrapper.host,
             "node_mac": self._node_mac,
+            "node_uid": self._node_uid,
             "wifi_devices": wifi_count,
             "lan_devices": lan_count,
             "rx_rate_kbps": rx_kbps,

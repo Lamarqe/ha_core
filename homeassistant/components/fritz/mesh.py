@@ -40,7 +40,9 @@ class FritzMeshTopology:
         self._master_mac = master_mac
 
         self._mesh_nodes: dict[str, str] = {}
-        self._switch_nodes: dict[str, str] = {}  # switch_key → friendly_name
+        self._switch_nodes: dict[
+            str, tuple[str, str]
+        ] = {}  # switch_key → (friendly_name, mac_address_representative)
         self._node_uplink_rates: dict[str, tuple[int | None, int | None]] = {}
         self._slave_parent_nodes: dict[str, str] = {}
 
@@ -55,8 +57,8 @@ class FritzMeshTopology:
         return self._mesh_nodes
 
     @property
-    def switch_nodes(self) -> dict[str, str]:
-        """Return switch nodes mapping switch_key to friendly display name."""
+    def switch_nodes(self) -> dict[str, tuple[str, str]]:
+        """Return switch nodes mapping switch_key to (friendly display name, mac_address_representative)."""
         return self._switch_nodes
 
     @property
@@ -101,6 +103,8 @@ class FritzMeshTopology:
                 continue
 
             node_name = node["device_name"]
+            if not node_name and FritzMeshTopology._is_switch_node(node):
+                node_name = self._switch_key_from_node(node)
             for interf in node["node_interfaces"]:
                 int_mac = interf["mac_address"]
                 mesh_intf[interf["uid"]] = Interface(
@@ -218,7 +222,7 @@ class FritzMeshTopology:
 
     def _update_switch_nodes(
         self,
-        new_switch_nodes: dict[str, str],
+        new_switch_nodes: dict[str, tuple[str, str]],
         new_switch_uplink_rates: dict[str, tuple[int | None, int | None]],
     ) -> None:
         """Update tracked LAN switch nodes, register device entries, and signal changes."""
@@ -251,7 +255,7 @@ class FritzMeshTopology:
         uplink_by_child_intf: dict[str, tuple[str, dict[str, Any]]],
     ) -> None:
         """Register non-meshed LAN switch interfaces into mesh_intf."""
-        new_switch_nodes: dict[str, str] = {}
+        new_switch_nodes: dict[str, tuple[str, str]] = {}
         new_switch_uplink_rates: dict[str, tuple[int | None, int | None]] = {}
         for node in topology.get("nodes", []):
             if node["is_meshed"] or not self._is_switch_node(node):
@@ -307,7 +311,8 @@ class FritzMeshTopology:
                             link,
                         )
 
-            new_switch_nodes[switch_key] = friendly_name
+            mac = node["device_mac_address"]
+            new_switch_nodes[switch_key] = friendly_name, dr.format_mac(mac)
             new_switch_uplink_rates[switch_key] = (uplink_rx, uplink_tx)
 
         self._update_switch_nodes(new_switch_nodes, new_switch_uplink_rates)
@@ -346,16 +351,17 @@ class FritzMeshTopology:
         """Return a stable unique key for a LAN switch node.
 
         The key is "switch_" followed by the first 8 hex characters of the SHA-256
-        hash of all interface MAC addresses (sorted, comma-separated).
+        hash of all MAC addresses of the switch (sorted, comma-separated).
         """
-        macs = sorted(
+        macs = [
             interf["mac_address"]
             for interf in node.get("node_interfaces", [])
             if interf.get("mac_address")
-        )
+        ]
         macs.append(node["device_mac_address"])
+
         # macs are consistently formatted by fritzbox. No need for normalization before hashing.
-        digest = hashlib.sha256(",".join(macs).encode()).hexdigest()[:8]
+        digest = hashlib.sha256(",".join(sorted(set(macs))).encode()).hexdigest()[:8]
         return f"switch_{digest}"
 
     @staticmethod
