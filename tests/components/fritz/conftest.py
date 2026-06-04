@@ -12,8 +12,10 @@ import pytest
 
 from homeassistant.components.fritz.const import DOMAIN
 from homeassistant.components.fritz.coordinator import (
+    FRITZ_DATA_KEY,
     FritzBoxTools,
     FritzConnectionCached,
+    FritzData,
 )
 from homeassistant.core import HomeAssistant
 
@@ -217,5 +219,8 @@ async def fixture_fritz_tools(
         password=mock_config_entry.data["password"],
         port=mock_config_entry.data["port"],
     )
+
+    hass.data.setdefault(FRITZ_DATA_KEY, FritzData())
+
     await coordinator.async_setup()
     return coordinator

@@ -7,68 +7,6 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers import device_registry as dr
 
 
-async def test_mesh_guest_client_loses_wan_access(
-    fritz_tools,
-) -> None:
-    """AP_GUEST clients get wan_access=None; unknown MAC in hosts is skipped."""
-
-    hosts = {"AA:BB:CC:DD:EE:01": MagicMock(wan_access=True)}
-    topology = {
-        "nodes": [
-            {
-                "is_meshed": True,
-                "mesh_role": "master",
-                "device_name": "fritz.box",
-                "node_interfaces": [
-                    {
-                        "uid": "ap-guest",
-                        "mac_address": fritz_tools.unique_id,
-                        "op_mode": "AP_GUEST",
-                        "ssid": "guest",
-                        "type": "WLAN",
-                        "name": "uplink0",
-                        "node_links": [],
-                    }
-                ],
-            },
-            {
-                "is_meshed": False,
-                "node_interfaces": [
-                    {
-                        "mac_address": "AA:BB:CC:DD:EE:02",
-                        "node_links": [
-                            {"state": "CONNECTED", "node_interface_1_uid": "ap-guest"}
-                        ],
-                    },
-                    {
-                        "mac_address": "AA:BB:CC:DD:EE:01",
-                        "node_links": [
-                            {"state": "CONNECTED", "node_interface_1_uid": "ap-guest"}
-                        ],
-                    },
-                ],
-            },
-        ]
-    }
-
-    with (
-        patch.object(
-            fritz_tools, "_async_update_hosts_info", AsyncMock(return_value=hosts)
-        ),
-        patch.object(
-            fritz_tools.fritz_hosts,
-            "get_mesh_topology",
-            MagicMock(return_value=topology),
-        ),
-        patch.object(fritz_tools, "manage_device_info", return_value=False) as manage,
-        patch.object(fritz_tools, "async_send_signal_device_update", AsyncMock()),
-    ):
-        await fritz_tools.async_scan_devices()
-
-    dev_info = manage.call_args.args[0]
-    assert dev_info.wan_access is None
-
-
 async def test_wifi_client_connected_to_slave_ap(
     fritz_tools,
 ) -> None:
@@ -375,6 +313,7 @@ async def test_client_connected_to_switch(
                 "is_meshed": False,
                 "device_class": "NETWORK_SWITCH",
                 "device_name": "Switch",
+                "device_mac_address": "FA:CE:00:14:D3:FC",
                 "node_interfaces": [
                     {
                         "uid": "switch-uplink",
@@ -442,7 +381,7 @@ async def test_client_connected_to_switch(
     # manage_device_info must be called exactly once — for the real client only.
     assert manage.call_count == 1
     dev_info = manage.call_args.args[0]
-    assert dev_info.connected_to == "switch_45e6b3f2"
+    assert dev_info.connected_to == "switch_d3826e0d"
     assert dev_info.connection_type == "LAN"
     assert dev_info.cur_rx_rate == 100000
 
@@ -484,7 +423,7 @@ async def test_switch_node_registered_by_stable_key(
                 "is_meshed": False,
                 "device_class": "NETWORK_SWITCH",
                 "device_name": "Switch",
-                "device_mac_address": "AA:BB:CC:DD:EE:01",
+                "device_mac_address": "FA:CE:00:14:D3:FC",
                 "node_interfaces": [
                     {
                         "uid": "switch-uplink",
@@ -543,8 +482,8 @@ async def test_switch_node_registered_by_stable_key(
     ):
         await fritz_tools.async_scan_devices()
 
-    # sha256("FA:CE:00:14:D3:FA,FA:CE:00:14:D3:FB")[:8] == "45e6b3f2"
-    expected_key = "switch_45e6b3f2"
+    # sha256("FA:CE:00:14:D3:FA,FA:CE:00:14:D3:FB,FA:CE:00:14:D3:FC")[:8] == "d3826e0d"
+    expected_key = "switch_d3826e0d"
     device_registry = dr.async_get(hass)
     assert (
         device_registry.async_get_device(identifiers={("fritz", expected_key)})

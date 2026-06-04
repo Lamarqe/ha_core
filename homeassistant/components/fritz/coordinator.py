@@ -194,7 +194,6 @@ class FritzBoxTools(DataUpdateCoordinator[UpdateCoordinatorDataType]):
             config_entry_id=self.config_entry.entry_id,
             unique_id=self.unique_id,
             master_mac=self.mac,
-            manage_device_info=lambda *a, **kw: self.manage_device_info(*a, **kw),  # pylint: disable=unnecessary-lambda
         )
 
         device_registry = dr.async_get(self.hass)
@@ -664,7 +663,11 @@ class FritzBoxTools(DataUpdateCoordinator[UpdateCoordinatorDataType]):
             return
 
         assert self._mesh is not None  # guaranteed by async_setup; satisfies mypy
-        new_device = self._mesh.process_topology(topology, hosts, consider_home)
+        topology_devices = self._mesh.process_topology(topology, hosts)
+        new_device = False
+        for dev in topology_devices:
+            if self.manage_device_info(*dev, consider_home):
+                new_device = True
         self.mesh_role = self._mesh.mesh_role
         self.mesh_wifi_uplink = self._mesh.mesh_wifi_uplink
         await self.async_send_signal_device_update(new_device)

@@ -6,7 +6,6 @@ from typing import Any
 
 from homeassistant.components.device_tracker import ScannerEntity
 from homeassistant.core import HomeAssistant, callback
-from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
@@ -113,20 +112,5 @@ class FritzBoxTracker(FritzDeviceBase, ScannerEntity):
             attrs["cur_rx_kbps"] = device.cur_rx_rate
         if device.cur_tx_rate is not None:
             attrs["cur_tx_kbps"] = device.cur_tx_rate
-
-        formatted_mac = dr.format_mac(self._mac)
-        node_name = next(
-            (
-                name
-                for name, mac in self._avm_wrapper.mesh_nodes.items()
-                if mac == formatted_mac
-            ),
-            None,
-        )
-        if node_name is not None and formatted_mac != self._avm_wrapper.mac:
-            attrs["is_master"] = False
-            attrs["fritz_unique_id"] = self._avm_wrapper.unique_id
-            attrs["node_name"] = node_name
-            attrs["node_mac"] = formatted_mac
 
         return attrs

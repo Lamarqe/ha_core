@@ -1,8 +1,5 @@
 """FRITZ!Box mesh topology processing."""
 
-from __future__ import annotations
-
-from collections.abc import Callable
 import hashlib
 import logging
 from typing import Any
@@ -35,14 +32,12 @@ class FritzMeshTopology:
         config_entry_id: str,
         unique_id: str,
         master_mac: str,
-        manage_device_info: Callable[[Device, str, float], bool],
     ) -> None:
         """Initialise the mesh topology processor."""
         self._hass = hass
         self._config_entry_id = config_entry_id
         self._unique_id = unique_id
         self._master_mac = master_mac
-        self._manage_device_info = manage_device_info
 
         self._mesh_nodes: dict[str, str] = {}
         self._switch_nodes: dict[str, str] = {}  # switch_key → friendly_name
@@ -90,12 +85,12 @@ class FritzMeshTopology:
         self,
         topology: dict[str, Any],
         hosts: dict[str, Device],
-        consider_home: float,
-    ) -> bool:
+    ) -> list[tuple[Device, str]]:
         """Process mesh topology and update device info.
 
-        Returns True if at least one new device was found.
+        Returns the list of all devices found in the topology.
         """
+        device_list: list[tuple[Device, str]] = []
         mesh_intf: dict[str, Interface] = {}
         uplink_by_child_intf: dict[str, tuple[str, dict[str, Any]]] = {}
         new_mesh_nodes: dict[str, str] = {}
@@ -140,8 +135,6 @@ class FritzMeshTopology:
         self._register_switch_nodes(topology, hosts, mesh_intf, uplink_by_child_intf)
         self._populate_slave_uplink_rates(topology, mesh_intf, uplink_by_child_intf)
 
-        new_device = False
-
         # Pass 2: update tracked device info for meshed slaves.
         for node in topology.get("nodes", []):
             if not node["is_meshed"] or node["mesh_role"] == "master":
@@ -161,8 +154,7 @@ class FritzMeshTopology:
                 dev_info.cur_rx_rate = link.get("cur_data_rate_rx")
                 dev_info.cur_tx_rate = link.get("cur_data_rate_tx")
 
-            if self._manage_device_info(dev_info, node_mac_raw, consider_home):
-                new_device = True
+            device_list.append((dev_info, node_mac_raw))
 
         # Pass 3: update tracked device info for non-meshed clients.
         for node in topology.get("nodes", []):
@@ -199,10 +191,9 @@ class FritzMeshTopology:
                         dev_info.cur_rx_rate = link.get("cur_data_rate_rx")
                         dev_info.cur_tx_rate = link.get("cur_data_rate_tx")
 
-                if self._manage_device_info(dev_info, dev_mac, consider_home):
-                    new_device = True
+                device_list.append((dev_info, dev_mac))
 
-        return new_device
+        return device_list
 
     # ── Device-registry + dispatcher helpers ──────────────────────────────────
 
@@ -285,17 +276,17 @@ class FritzMeshTopology:
                     if link.get("state") == "CONNECTED" and mesh_intf.get(
                         link["node_interface_1_uid"]
                     ):
-                        uplink_rx = link.get("cur_data_rate_rx") or None
-                        uplink_tx = link.get("cur_data_rate_tx") or None
+                        uplink_rx = link.get("cur_data_rate_rx")
+                        uplink_tx = link.get("cur_data_rate_tx")
                         break
-                if uplink_rx is not None:
+                if uplink_rx is not None and uplink_rx > 0:
                     break
 
-            if uplink_rx is None:
+            if uplink_rx is None or uplink_rx == 0:
                 _LOGGER.warning(
                     "LAN switch node %s has no connected uplink to a mesh node; "
                     "skipping switch registration",
-                    node.get("uid"),
+                    node.get("device_name"),
                 )
                 continue
 
@@ -362,6 +353,8 @@ class FritzMeshTopology:
             for interf in node.get("node_interfaces", [])
             if interf.get("mac_address")
         )
+        macs.append(node["device_mac_address"])
+        # macs are consistently formatted by fritzbox. No need for normalization before hashing.
         digest = hashlib.sha256(",".join(macs).encode()).hexdigest()[:8]
         return f"switch_{digest}"
 

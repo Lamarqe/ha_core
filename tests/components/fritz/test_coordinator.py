@@ -21,11 +21,9 @@ from homeassistant.components.fritz.const import (
     SCAN_INTERVAL,
 )
 from homeassistant.components.fritz.coordinator import (
-    FRITZ_DATA_KEY,
     AvmWrapper,
     ClassSetupMissing,
     FritzConnectionCached,
-    FritzData,
 )
 from homeassistant.config_entries import ConfigEntryState
 from homeassistant.const import (
@@ -60,40 +58,6 @@ def fixture_mock_config_entry() -> MockConfigEntry:
         data=MOCK_USER_DATA,
         unique_id="1234",
     )
-
-
-@pytest.fixture
-def patch_fritzconnectioncached_globally(fc_data) -> Generator[FritzConnectionMock]:
-    """Patch FritzConnectionCached globally for coordinator-only tests."""
-
-    mock_conn = FritzConnectionMock(fc_data)
-    with patch(
-        "homeassistant.components.fritz.coordinator.FritzConnectionCached",
-        return_value=mock_conn,
-    ):
-        yield mock_conn
-
-
-@pytest.fixture(name="fritz_tools")
-async def fixture_fritz_tools(
-    hass: HomeAssistant,
-    mock_config_entry: MockConfigEntry,
-    patch_fritzconnectioncached_globally: FritzConnectionMock,
-) -> FritzBoxTools:
-    """Return FritzBoxTools instance with mocked connection."""
-
-    mock_config_entry.add_to_hass(hass)
-    coordinator = FritzBoxTools(
-        hass=hass,
-        config_entry=mock_config_entry,
-        password=mock_config_entry.data["password"],
-        port=mock_config_entry.data["port"],
-    )
-
-    hass.data.setdefault(FRITZ_DATA_KEY, FritzData())
-
-    await coordinator.async_setup()
-    return coordinator
 
 
 @pytest.mark.parametrize(
