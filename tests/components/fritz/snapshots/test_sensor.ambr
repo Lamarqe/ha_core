@@ -1,13 +1,11 @@
 # serializer version: 1
-# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.fritz_repeater_connected_devices-entry]
+# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.fritz_repeater-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
     ]),
     'area_id': None,
-    'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
+    'capabilities': None,
     'config_entry_id': <ANY>,
     'config_subentry_id': <ANY>,
     'device_class': None,
@@ -15,7 +13,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.fritz_repeater_connected_devices',
+    'entity_id': 'sensor.fritz_repeater',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -23,56 +21,52 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Connected devices',
+    'object_id_base': None,
     'options': dict({
     }),
     'original_device_class': None,
     'original_icon': None,
-    'original_name': 'Connected devices',
+    'original_name': None,
     'platform': 'fritz',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': 'mesh_connected_devices',
+    'translation_key': None,
     'unique_id': 'fritz-repeater_mesh_connected_devices',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.fritz_repeater_connected_devices-state]
+# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.fritz_repeater-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'friendly_name': 'fritz-repeater Connected devices',
+      'friendly_name': 'fritz-repeater',
       'fritz_host': 'fake_host',
       'fritz_unique_id': '1CED6F123411',
-      'is_master': False,
       'lan_devices': 0,
       'node_mac': '1c:ed:6f:12:34:21',
       'node_name': 'fritz-repeater',
-      'node_type': 'slave',
+      'node_type': <MeshRoles.SLAVE: 'slave'>,
       'node_uid': 'fritz-repeater',
       'parent_node': 'fritz.box',
       'rx_rate_kbps': 144400,
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
       'tx_rate_kbps': 130000,
       'wifi_devices': 0,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.fritz_repeater_connected_devices',
+    'entity_id': 'sensor.fritz_repeater',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '0',
   })
 # ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.mock_title_connected_devices-entry]
+# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.mock_title-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
     ]),
     'area_id': None,
-    'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
+    'capabilities': None,
     'config_entry_id': <ANY>,
     'config_subentry_id': <ANY>,
     'device_class': None,
@@ -80,7 +74,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.mock_title_connected_devices',
+    'entity_id': 'sensor.mock_title',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -88,40 +82,38 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Connected devices',
+    'object_id_base': None,
     'options': dict({
     }),
     'original_device_class': None,
     'original_icon': None,
-    'original_name': 'Connected devices',
+    'original_name': None,
     'platform': 'fritz',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': 'mesh_connected_devices',
+    'translation_key': None,
     'unique_id': 'fritz.box_mesh_connected_devices',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.mock_title_connected_devices-state]
+# name: test_sensor_cpu_temp_not_supported[None-return_values1][sensor.mock_title-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'friendly_name': 'Mock Title Connected devices',
+      'friendly_name': 'Mock Title',
       'fritz_host': 'fake_host',
       'fritz_unique_id': '1CED6F123411',
-      'is_master': True,
       'lan_devices': 1,
       'node_mac': '1c:ed:6f:12:34:11',
       'node_name': 'fritz.box',
-      'node_type': 'master',
+      'node_type': <MeshRoles.MASTER: 'master'>,
       'node_uid': 'fritz.box',
       'rx_rate_kbps': 144400,
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
       'tx_rate_kbps': 130000,
       'wifi_devices': 1,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.mock_title_connected_devices',
+    'entity_id': 'sensor.mock_title',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
@@ -986,15 +978,13 @@
     'state': '2024-08-03T16:30:21+00:00',
   })
 # ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.fritz_repeater_connected_devices-entry]
+# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.fritz_repeater-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
     ]),
     'area_id': None,
-    'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
+    'capabilities': None,
     'config_entry_id': <ANY>,
     'config_subentry_id': <ANY>,
     'device_class': None,
@@ -1002,7 +992,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.fritz_repeater_connected_devices',
+    'entity_id': 'sensor.fritz_repeater',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -1010,56 +1000,52 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Connected devices',
+    'object_id_base': None,
     'options': dict({
     }),
     'original_device_class': None,
     'original_icon': None,
-    'original_name': 'Connected devices',
+    'original_name': None,
     'platform': 'fritz',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': 'mesh_connected_devices',
+    'translation_key': None,
     'unique_id': 'fritz-repeater_mesh_connected_devices',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.fritz_repeater_connected_devices-state]
+# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.fritz_repeater-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'friendly_name': 'fritz-repeater Connected devices',
+      'friendly_name': 'fritz-repeater',
       'fritz_host': 'fake_host',
       'fritz_unique_id': '1CED6F123411',
-      'is_master': False,
       'lan_devices': 0,
       'node_mac': '1c:ed:6f:12:34:21',
       'node_name': 'fritz-repeater',
-      'node_type': 'slave',
+      'node_type': <MeshRoles.SLAVE: 'slave'>,
       'node_uid': 'fritz-repeater',
       'parent_node': 'fritz.box',
       'rx_rate_kbps': 144400,
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
       'tx_rate_kbps': 130000,
       'wifi_devices': 0,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.fritz_repeater_connected_devices',
+    'entity_id': 'sensor.fritz_repeater',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '0',
   })
 # ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.mock_title_connected_devices-entry]
+# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.mock_title-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
     ]),
     'area_id': None,
-    'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
+    'capabilities': None,
     'config_entry_id': <ANY>,
     'config_subentry_id': <ANY>,
     'device_class': None,
@@ -1067,7 +1053,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.mock_title_connected_devices',
+    'entity_id': 'sensor.mock_title',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -1075,40 +1061,38 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Connected devices',
+    'object_id_base': None,
     'options': dict({
     }),
     'original_device_class': None,
     'original_icon': None,
-    'original_name': 'Connected devices',
+    'original_name': None,
     'platform': 'fritz',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': 'mesh_connected_devices',
+    'translation_key': None,
     'unique_id': 'fritz.box_mesh_connected_devices',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.mock_title_connected_devices-state]
+# name: test_sensor_cpu_temp_not_supported[None-return_values2][sensor.mock_title-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'friendly_name': 'Mock Title Connected devices',
+      'friendly_name': 'Mock Title',
       'fritz_host': 'fake_host',
       'fritz_unique_id': '1CED6F123411',
-      'is_master': True,
       'lan_devices': 1,
       'node_mac': '1c:ed:6f:12:34:11',
       'node_name': 'fritz.box',
-      'node_type': 'master',
+      'node_type': <MeshRoles.MASTER: 'master'>,
       'node_uid': 'fritz.box',
       'rx_rate_kbps': 144400,
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
       'tx_rate_kbps': 130000,
       'wifi_devices': 1,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.mock_title_connected_devices',
+    'entity_id': 'sensor.mock_title',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
@@ -1973,15 +1957,13 @@
     'state': '2024-08-03T16:30:21+00:00',
   })
 # ---
-# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.fritz_repeater_connected_devices-entry]
+# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.fritz_repeater-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
     ]),
     'area_id': None,
-    'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
+    'capabilities': None,
     'config_entry_id': <ANY>,
     'config_subentry_id': <ANY>,
     'device_class': None,
@@ -1989,7 +1971,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.fritz_repeater_connected_devices',
+    'entity_id': 'sensor.fritz_repeater',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -1997,56 +1979,52 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Connected devices',
+    'object_id_base': None,
     'options': dict({
     }),
     'original_device_class': None,
     'original_icon': None,
-    'original_name': 'Connected devices',
+    'original_name': None,
     'platform': 'fritz',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': 'mesh_connected_devices',
+    'translation_key': None,
     'unique_id': 'fritz-repeater_mesh_connected_devices',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.fritz_repeater_connected_devices-state]
+# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.fritz_repeater-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'friendly_name': 'fritz-repeater Connected devices',
+      'friendly_name': 'fritz-repeater',
       'fritz_host': 'fake_host',
       'fritz_unique_id': '1CED6F123411',
-      'is_master': False,
       'lan_devices': 0,
       'node_mac': '1c:ed:6f:12:34:21',
       'node_name': 'fritz-repeater',
-      'node_type': 'slave',
+      'node_type': <MeshRoles.SLAVE: 'slave'>,
       'node_uid': 'fritz-repeater',
       'parent_node': 'fritz.box',
       'rx_rate_kbps': 144400,
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
       'tx_rate_kbps': 130000,
       'wifi_devices': 0,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.fritz_repeater_connected_devices',
+    'entity_id': 'sensor.fritz_repeater',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '0',
   })
 # ---
-# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.mock_title_connected_devices-entry]
+# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.mock_title-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
     ]),
     'area_id': None,
-    'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
+    'capabilities': None,
     'config_entry_id': <ANY>,
     'config_subentry_id': <ANY>,
     'device_class': None,
@@ -2054,7 +2032,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.mock_title_connected_devices',
+    'entity_id': 'sensor.mock_title',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -2062,40 +2040,38 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Connected devices',
+    'object_id_base': None,
     'options': dict({
     }),
     'original_device_class': None,
     'original_icon': None,
-    'original_name': 'Connected devices',
+    'original_name': None,
     'platform': 'fritz',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': 'mesh_connected_devices',
+    'translation_key': None,
     'unique_id': 'fritz.box_mesh_connected_devices',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.mock_title_connected_devices-state]
+# name: test_sensor_cpu_temp_not_supported[side_effect0-None][sensor.mock_title-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'friendly_name': 'Mock Title Connected devices',
+      'friendly_name': 'Mock Title',
       'fritz_host': 'fake_host',
       'fritz_unique_id': '1CED6F123411',
-      'is_master': True,
       'lan_devices': 1,
       'node_mac': '1c:ed:6f:12:34:11',
       'node_name': 'fritz.box',
-      'node_type': 'master',
+      'node_type': <MeshRoles.MASTER: 'master'>,
       'node_uid': 'fritz.box',
       'rx_rate_kbps': 144400,
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
       'tx_rate_kbps': 130000,
       'wifi_devices': 1,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.mock_title_connected_devices',
+    'entity_id': 'sensor.mock_title',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
@@ -2960,15 +2936,13 @@
     'state': '2024-08-03T16:30:21+00:00',
   })
 # ---
-# name: test_sensor_cpu_temp_not_supported[side_effect3-None][sensor.fritz_repeater_connected_devices-entry]
+# name: test_sensor_cpu_temp_not_supported[side_effect3-None][sensor.fritz_repeater-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
     ]),
     'area_id': None,
-    'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
+    'capabilities': None,
     'config_entry_id': <ANY>,
     'config_subentry_id': <ANY>,
     'device_class': None,
@@ -2976,7 +2950,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.fritz_repeater_connected_devices',
+    'entity_id': 'sensor.fritz_repeater',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -2984,56 +2958,52 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Connected devices',
+    'object_id_base': None,
     'options': dict({
     }),
     'original_device_class': None,
     'original_icon': None,
-    'original_name': 'Connected devices',
+    'original_name': None,
     'platform': 'fritz',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': 'mesh_connected_devices',
+    'translation_key': None,
     'unique_id': 'fritz-repeater_mesh_connected_devices',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_sensor_cpu_temp_not_supported[side_effect3-None][sensor.fritz_repeater_connected_devices-state]
+# name: test_sensor_cpu_temp_not_supported[side_effect3-None][sensor.fritz_repeater-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'friendly_name': 'fritz-repeater Connected devices',
+      'friendly_name': 'fritz-repeater',
       'fritz_host': 'fake_host',
       'fritz_unique_id': '1CED6F123411',
-      'is_master': False,
       'lan_devices': 0,
       'node_mac': '1c:ed:6f:12:34:21',
       'node_name': 'fritz-repeater',
-      'node_type': 'slave',
+      'node_type': <MeshRoles.SLAVE: 'slave'>,
       'node_uid': 'fritz-repeater',
       'parent_node': 'fritz.box',
       'rx_rate_kbps': 144400,
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
       'tx_rate_kbps': 130000,
       'wifi_devices': 0,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.fritz_repeater_connected_devices',
+    'entity_id': 'sensor.fritz_repeater',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '0',
   })
 # ---
-# name: test_sensor_cpu_temp_not_supported[side_effect3-None][sensor.mock_title_connected_devices-entry]
+# name: test_sensor_cpu_temp_not_supported[side_effect3-None][sensor.mock_title-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
     ]),
     'area_id': None,
-    'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
+    'capabilities': None,
     'config_entry_id': <ANY>,
     'config_subentry_id': <ANY>,
     'device_class': None,
@@ -3041,7 +3011,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.mock_title_connected_devices',
+    'entity_id': 'sensor.mock_title',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -3049,40 +3019,38 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Connected devices',
+    'object_id_base': None,
     'options': dict({
     }),
     'original_device_class': None,
     'original_icon': None,
-    'original_name': 'Connected devices',
+    'original_name': None,
     'platform': 'fritz',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': 'mesh_connected_devices',
+    'translation_key': None,
     'unique_id': 'fritz.box_mesh_connected_devices',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_sensor_cpu_temp_not_supported[side_effect3-None][sensor.mock_title_connected_devices-state]
+# name: test_sensor_cpu_temp_not_supported[side_effect3-None][sensor.mock_title-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'friendly_name': 'Mock Title Connected devices',
+      'friendly_name': 'Mock Title',
       'fritz_host': 'fake_host',
       'fritz_unique_id': '1CED6F123411',
-      'is_master': True,
       'lan_devices': 1,
       'node_mac': '1c:ed:6f:12:34:11',
       'node_name': 'fritz.box',
-      'node_type': 'master',
+      'node_type': <MeshRoles.MASTER: 'master'>,
       'node_uid': 'fritz.box',
       'rx_rate_kbps': 144400,
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
       'tx_rate_kbps': 130000,
       'wifi_devices': 1,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.mock_title_connected_devices',
+    'entity_id': 'sensor.mock_title',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
@@ -3947,15 +3915,13 @@
     'state': '2024-08-03T16:30:21+00:00',
   })
 # ---
-# name: test_sensor_setup[sensor.fritz_repeater_connected_devices-entry]
+# name: test_sensor_setup[sensor.fritz_repeater-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
     ]),
     'area_id': None,
-    'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
+    'capabilities': None,
     'config_entry_id': <ANY>,
     'config_subentry_id': <ANY>,
     'device_class': None,
@@ -3963,7 +3929,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.fritz_repeater_connected_devices',
+    'entity_id': 'sensor.fritz_repeater',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -3971,56 +3937,52 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Connected devices',
+    'object_id_base': None,
     'options': dict({
     }),
     'original_device_class': None,
     'original_icon': None,
-    'original_name': 'Connected devices',
+    'original_name': None,
     'platform': 'fritz',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': 'mesh_connected_devices',
+    'translation_key': None,
     'unique_id': 'fritz-repeater_mesh_connected_devices',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_sensor_setup[sensor.fritz_repeater_connected_devices-state]
+# name: test_sensor_setup[sensor.fritz_repeater-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'friendly_name': 'fritz-repeater Connected devices',
+      'friendly_name': 'fritz-repeater',
       'fritz_host': 'fake_host',
       'fritz_unique_id': '1CED6F123411',
-      'is_master': False,
       'lan_devices': 0,
       'node_mac': '1c:ed:6f:12:34:21',
       'node_name': 'fritz-repeater',
-      'node_type': 'slave',
+      'node_type': <MeshRoles.SLAVE: 'slave'>,
       'node_uid': 'fritz-repeater',
       'parent_node': 'fritz.box',
       'rx_rate_kbps': 144400,
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
       'tx_rate_kbps': 130000,
       'wifi_devices': 0,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.fritz_repeater_connected_devices',
+    'entity_id': 'sensor.fritz_repeater',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '0',
   })
 # ---
-# name: test_sensor_setup[sensor.mock_title_connected_devices-entry]
+# name: test_sensor_setup[sensor.mock_title-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
     ]),
     'area_id': None,
-    'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-    }),
+    'capabilities': None,
     'config_entry_id': <ANY>,
     'config_subentry_id': <ANY>,
     'device_class': None,
@@ -4028,7 +3990,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.mock_title_connected_devices',
+    'entity_id': 'sensor.mock_title',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -4036,40 +3998,38 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Connected devices',
+    'object_id_base': None,
     'options': dict({
     }),
     'original_device_class': None,
     'original_icon': None,
-    'original_name': 'Connected devices',
+    'original_name': None,
     'platform': 'fritz',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': 'mesh_connected_devices',
+    'translation_key': None,
     'unique_id': 'fritz.box_mesh_connected_devices',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_sensor_setup[sensor.mock_title_connected_devices-state]
+# name: test_sensor_setup[sensor.mock_title-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'friendly_name': 'Mock Title Connected devices',
+      'friendly_name': 'Mock Title',
       'fritz_host': 'fake_host',
       'fritz_unique_id': '1CED6F123411',
-      'is_master': True,
       'lan_devices': 1,
       'node_mac': '1c:ed:6f:12:34:11',
       'node_name': 'fritz.box',
-      'node_type': 'master',
+      'node_type': <MeshRoles.MASTER: 'master'>,
       'node_uid': 'fritz.box',
       'rx_rate_kbps': 144400,
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
       'tx_rate_kbps': 130000,
       'wifi_devices': 1,
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.mock_title_connected_devices',
+    'entity_id': 'sensor.mock_title',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,

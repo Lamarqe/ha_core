@@ -24,6 +24,7 @@ from homeassistant.const import (
     UnitOfTemperature,
 )
 from homeassistant.core import HomeAssistant, callback
+from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
@@ -33,9 +34,9 @@ from homeassistant.util.dt import utcnow
 from .const import DOMAIN, DSL_CONNECTION, MeshRoles
 from .coordinator import FRITZ_DATA_KEY, AvmWrapper, FritzConfigEntry
 from .entity import (
+    CoordinatorEntity,
     FritzBoxBaseCoordinatorEntity,
     FritzEntityDescription,
-    FritzMeshNodeEntity,
 )
 from .models import ConnectionInfo
 
@@ -377,66 +378,40 @@ async def async_setup_entry(
     ):
         fritz_data.mesh_node_sensors.setdefault(entry.entry_id, set())
 
-        for node_name, node_mac in avm_wrapper.mesh_nodes.items():
-            for node_desc in MESH_NODE_SENSOR_TYPES:
-                sensor_key = f"{node_mac}_{node_desc.key}"
-                if sensor_key not in fritz_data.mesh_node_sensors[entry.entry_id]:
-                    fritz_data.mesh_node_sensors[entry.entry_id].add(sensor_key)
-                    entities.append(
-                        FritzMeshNodeSensor(avm_wrapper, node_name, node_mac, node_desc)
-                    )
-
-        for switch_key, (friendly_name, switch_mac) in avm_wrapper.switch_nodes.items():
-            for node_desc in MESH_NODE_SENSOR_TYPES:
-                sensor_key = f"{switch_key}_{node_desc.key}"
-                if sensor_key not in fritz_data.mesh_node_sensors[entry.entry_id]:
-                    fritz_data.mesh_node_sensors[entry.entry_id].add(sensor_key)
-                    entities.append(
-                        FritzMeshNodeSensor(
-                            avm_wrapper,
-                            friendly_name,
-                            switch_mac,
-                            node_desc,
-                            switch_key,
-                        )
-                    )
+        entities.extend(
+            FritzMeshNodeSensor.create_from_nodes(
+                MeshRoles.SLAVE,
+                avm_wrapper,
+                fritz_data.mesh_node_sensors[entry.entry_id],
+            )
+        )
+        entities.extend(
+            FritzMeshNodeSensor.create_from_nodes(
+                MeshRoles.SWITCH,
+                avm_wrapper,
+                fritz_data.mesh_node_sensors[entry.entry_id],
+            )
+        )
 
         @callback
         def add_mesh_node_sensors() -> None:
-            new_entities: list[FritzMeshNodeSensor] = []
-            for node_name, node_mac in avm_wrapper.mesh_nodes.items():
-                for node_desc in MESH_NODE_SENSOR_TYPES:
-                    sensor_key = f"{node_mac}_{node_desc.key}"
-                    if sensor_key not in fritz_data.mesh_node_sensors[entry.entry_id]:
-                        fritz_data.mesh_node_sensors[entry.entry_id].add(sensor_key)
-                        new_entities.append(
-                            FritzMeshNodeSensor(
-                                avm_wrapper, node_name, node_mac, node_desc
-                            )
-                        )
-            async_add_entities(new_entities)
+            async_add_entities(
+                FritzMeshNodeSensor.create_from_nodes(
+                    MeshRoles.SLAVE,
+                    avm_wrapper,
+                    fritz_data.mesh_node_sensors[entry.entry_id],
+                )
+            )
 
         @callback
         def add_switch_node_sensors() -> None:
-            new_entities: list[FritzMeshNodeSensor] = []
-            for switch_key, (
-                friendly_name,
-                switch_mac,
-            ) in avm_wrapper.switch_nodes.items():
-                for node_desc in MESH_NODE_SENSOR_TYPES:
-                    sensor_key = f"{switch_key}_{node_desc.key}"
-                    if sensor_key not in fritz_data.mesh_node_sensors[entry.entry_id]:
-                        fritz_data.mesh_node_sensors[entry.entry_id].add(sensor_key)
-                        new_entities.append(
-                            FritzMeshNodeSensor(
-                                avm_wrapper,
-                                friendly_name,
-                                switch_mac,
-                                node_desc,
-                                switch_key,
-                            )
-                        )
-            async_add_entities(new_entities)
+            async_add_entities(
+                FritzMeshNodeSensor.create_from_nodes(
+                    MeshRoles.SWITCH,
+                    avm_wrapper,
+                    fritz_data.mesh_node_sensors[entry.entry_id],
+                )
+            )
 
         entry.async_on_unload(
             async_dispatcher_connect(
@@ -465,38 +440,81 @@ class FritzBoxSensor(FritzBoxBaseCoordinatorEntity, SensorEntity):
         return self.coordinator.data["entity_states"].get(self.entity_description.key)
 
 
-class FritzMeshNodeSensor(FritzMeshNodeEntity, SensorEntity):
-    """Sensor for aggregate metrics of a FRITZ!Box mesh node."""
+class FritzMeshNodeSensor(CoordinatorEntity[AvmWrapper], SensorEntity):
+    """Sensor for aggregate metrics of a FRITZ!Box mesh node (master, repeater or switch)."""
 
     entity_description: FritzMeshNodeSensorEntityDescription
+    _attr_has_entity_name = True
 
     def __init__(
         self,
         avm_wrapper: AvmWrapper,
+        description: FritzMeshNodeSensorEntityDescription,
+        node_type: MeshRoles,
+        node_uid: str,
         node_name: str,
         node_mac: str,
-        description: FritzMeshNodeSensorEntityDescription,
-        node_uid: str | None = None,
     ) -> None:
-        """Initialize mesh node sensor."""
-        super().__init__(avm_wrapper, node_name, node_mac, node_uid)
-        self.entity_description = description
-        self._attr_unique_id = f"{self._node_uid}_{description.key}"
-
-        self._is_master = node_mac == avm_wrapper.mac
-        if self._is_master:
-            self._node_type = "master"
-        elif node_uid is None:
-            self._node_type = "slave"
-        else:
-            self._node_type = "switch"
-            # Switch devices are registered by identifier, not MAC connection.
+        """Initialize a mesh node entity."""
+        super().__init__(avm_wrapper)
+        self._avm_wrapper = avm_wrapper
+        self._description = description
+        self._node_type = node_type
+        self._node_uid = node_uid
+        self._attr_unique_id = f"{node_uid}_{description.key}"
+        self._node_name = node_name
+        self._node_mac = node_mac
+        if self._node_type == MeshRoles.SWITCH:
             self._attr_device_info = DeviceInfo(identifiers={(DOMAIN, node_uid)})
+        else:
+            self._attr_device_info = DeviceInfo(
+                connections={(dr.CONNECTION_NETWORK_MAC, node_mac)}
+            )
+
+    @staticmethod
+    def create_from_nodes(
+        mesh_type: MeshRoles,
+        wrapper: AvmWrapper,
+        skip_keys: set[str],
+    ) -> list[FritzMeshNodeSensor]:
+        """Create FritzMeshNodeSensors from node list."""
+        nodes: dict[str, tuple[str, str]] | dict[str, str] = (
+            wrapper.switch_nodes
+            if mesh_type == MeshRoles.SWITCH
+            else wrapper.mesh_nodes
+        )
+        sensors = []
+        for node_key, node_values in nodes.items():
+            for node_desc in MESH_NODE_SENSOR_TYPES:
+                sensor_key = f"{node_key}_{node_desc.key}"
+                if sensor_key not in skip_keys:
+                    skip_keys.add(sensor_key)
+                    if mesh_type == MeshRoles.SWITCH:
+                        node_name = node_values[0]
+                        node_mac = node_values[1]
+                    else:
+                        node_name = node_key
+                        assert isinstance(node_values, str)
+                        node_mac = node_values
+                    node_type = (
+                        MeshRoles.MASTER if node_mac == wrapper.mac else mesh_type
+                    )
+                    sensors.append(
+                        FritzMeshNodeSensor(
+                            avm_wrapper=wrapper,
+                            description=node_desc,
+                            node_type=node_type,
+                            node_uid=node_key,
+                            node_name=node_name,
+                            node_mac=node_mac,
+                        )
+                    )
+        return sensors
 
     @property
     def native_value(self) -> StateType:
         """Return the value reported by the sensor."""
-        return self.entity_description.value_fn(self, self._node_uid)
+        return self._description.value_fn(self, self._node_uid)
 
     @property
     def extra_state_attributes(self) -> dict[str, Any]:
@@ -525,7 +543,6 @@ class FritzMeshNodeSensor(FritzMeshNodeEntity, SensorEntity):
         return {
             "node_name": self._node_name,
             "node_type": self._node_type,
-            "is_master": self._is_master,
             "fritz_unique_id": self._avm_wrapper.unique_id,
             "fritz_host": self._avm_wrapper.host,
             "node_mac": self._node_mac,

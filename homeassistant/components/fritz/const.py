@@ -24,6 +24,7 @@ class MeshRoles(StrEnum):
     NONE = "none"
     MASTER = "master"
     SLAVE = "slave"
+    SWITCH = "switch"
 
 
 DOMAIN = "fritz"
