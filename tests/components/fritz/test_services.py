@@ -13,13 +13,22 @@ from voluptuous import MultipleInvalid
 from homeassistant.components.fritz.const import DOMAIN
 from homeassistant.components.fritz.services import (
     SERVICE_DIAL,
+    SERVICE_GET_MESH_INFO,
     SERVICE_SET_GUEST_WIFI_PW,
+    _async_get_mesh_info,
 )
-from homeassistant.core import HomeAssistant
+from homeassistant.config_entries import ConfigEntryState
+from homeassistant.core import HomeAssistant, ServiceCall
+from homeassistant.exceptions import ServiceValidationError
 from homeassistant.helpers import device_registry as dr
 from homeassistant.setup import async_setup_component
 
-from .const import MOCK_SERIAL_NUMBER, MOCK_USER_DATA
+from .const import (
+    MOCK_HOST_ATTRIBUTES_DATA,
+    MOCK_MESH_DATA,
+    MOCK_SERIAL_NUMBER,
+    MOCK_USER_DATA,
+)
 
 from tests.common import MockConfigEntry
 
@@ -352,4 +361,50 @@ async def test_service_dial_unloaded(
             "ServiceValidationError: Failed to perform action"
             f' "{SERVICE_DIAL}".'
             " Config entry for target not found" in caplog.text
+        )
+
+
+async def test_get_mesh_topology_and_hosts_services_return_values(
+    hass: HomeAssistant,
+    fc_class_mock,
+    fh_class_mock,
+    fs_class_mock,
+) -> None:
+    """Test entry services return stored values per config entry."""
+
+    entry = MockConfigEntry(domain=DOMAIN, data=MOCK_USER_DATA)
+    entry.add_to_hass(hass)
+
+    await hass.config_entries.async_setup(entry.entry_id)
+    await hass.async_block_till_done()
+    assert entry.state is ConfigEntryState.LOADED
+
+    result = await _async_get_mesh_info(
+        ServiceCall(
+            hass,
+            DOMAIN,
+            SERVICE_GET_MESH_INFO,
+            {"config_entry_id": entry.entry_id},
+        )
+    )
+
+    assert result == {
+        "mesh_topology": MOCK_MESH_DATA,
+        "hosts_attributes": MOCK_HOST_ATTRIBUTES_DATA,
+    }
+
+
+async def test_get_mesh_topology_and_hosts_services_raise_when_no_entries(
+    hass: HomeAssistant,
+) -> None:
+    """Services should raise when no config entry is targeted."""
+    # call without a config entry id; helper should raise ServiceValidationError
+    with pytest.raises(ServiceValidationError):
+        await _async_get_mesh_info(
+            ServiceCall(
+                hass,
+                DOMAIN,
+                SERVICE_GET_MESH_INFO,
+                {"config_entry_id": None},
+            )
         )

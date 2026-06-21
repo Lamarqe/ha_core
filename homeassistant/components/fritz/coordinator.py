@@ -181,6 +181,8 @@ class FritzBoxTools(DataUpdateCoordinator[UpdateCoordinatorDataType]):
         self._entity_update_functions: dict[
             str, Callable[[FritzStatus, StateType], Any]
         ] = {}
+        self._mesh_topology_raw: dict[str, Any] | None = None
+        self._hosts_attributes_raw: list[HostAttributes] | None = None
 
     async def async_setup(self, options: Mapping[str, Any] | None = None) -> None:
         """Wrap up FritzboxTools class setup."""
@@ -384,6 +386,16 @@ class FritzBoxTools(DataUpdateCoordinator[UpdateCoordinatorDataType]):
         return self._release_url
 
     @property
+    def hosts_attributes_raw(self) -> list[HostAttributes]:
+        """Return the hosts attributes, as received from the device."""
+        return self._hosts_attributes_raw or []
+
+    @property
+    def mesh_topology_raw(self) -> dict[str, Any]:
+        """Return mesh topology, as received from the device."""
+        return self._mesh_topology_raw or {}
+
+    @property
     def mac(self) -> str:
         """Return device Mac address."""
         if not self._unique_id:
@@ -442,6 +454,8 @@ class FritzBoxTools(DataUpdateCoordinator[UpdateCoordinatorDataType]):
                         self.fritz_hosts.get_hosts_attributes
                     ),
                 )
+                # store raw hosts_attributes result for service access
+                self._hosts_attributes_raw = hosts_attributes
             except FritzActionError:
                 hosts_info = cast(
                     list[HostInfo],
@@ -602,11 +616,12 @@ class FritzBoxTools(DataUpdateCoordinator[UpdateCoordinatorDataType]):
             return
 
         try:
-            if not (
-                topology := await self.hass.async_add_executor_job(
-                    self.fritz_hosts.get_mesh_topology
-                )
-            ) or not isinstance(topology, dict):
+            topology = await self.hass.async_add_executor_job(
+                self.fritz_hosts.get_mesh_topology
+            )
+            # store raw topology result for service access
+            self._mesh_topology_raw = topology
+            if not topology or not isinstance(topology, dict):
                 raise Exception("Mesh supported but empty topology reported")  # noqa: TRY002
         except FritzActionError:
             self.mesh_role = MeshRoles.SLAVE
