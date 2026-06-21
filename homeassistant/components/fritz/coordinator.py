@@ -5,6 +5,7 @@ from collections.abc import Callable, Mapping
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from functools import partial
+import json
 import logging
 import re
 from typing import Any, TypedDict, cast
@@ -177,6 +178,8 @@ class FritzBoxTools(DataUpdateCoordinator[UpdateCoordinatorDataType]):
         self._entity_update_functions: dict[
             str, Callable[[FritzStatus, StateType], Any]
         ] = {}
+        self._mesh_topology_raw: dict[str, Any] | None = None
+        self._hosts_attributes_raw: list[HostAttributes] | None = None
         self._mesh_topology_raw: dict[str, Any] | None = None
         self._hosts_attributes_raw: list[HostAttributes] | None = None
 

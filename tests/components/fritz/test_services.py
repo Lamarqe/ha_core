@@ -1,5 +1,6 @@
 """Tests for Fritz!Tools services."""
 
+import json
 from unittest.mock import patch
 
 from fritzconnection.core.exceptions import (
